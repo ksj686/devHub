@@ -37,15 +37,15 @@ out/
 .vscode/
 
 
-### .git/
-### .gradle/
-### .settings/
-### bin/
-### gradle/
-### .classpath
-### .gitattributes
-### .project
-### gradlew
-### gradlew.bat
-### HELP.md
-### settings.gradle
+.git/
+.gradle/
+.settings/
+bin/
+gradle/
+.classpath
+.gitattributes
+.project
+gradlew
+gradlew.bat
+HELP.md
+settings.gradle
