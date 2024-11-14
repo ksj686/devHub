@@ -9,4 +9,19 @@ public class HomeController {
 	public String index() {
 		 return "home";
 	 }
+	
+	@GetMapping("/content")
+	public String homeIndex() {
+		 return "thymeleaf/content/home";
+	 }
+	
+	@GetMapping("/register")
+	public String registerIndex() {
+		 return "thymeleaf/register/home";
+	 }
+	
+	@GetMapping("/profile")
+	public String profileIndex() {
+		 return "thymeleaf/profile/home";
+	 }
 }
