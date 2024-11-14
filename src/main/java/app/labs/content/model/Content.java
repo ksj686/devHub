@@ -1,4 +1,4 @@
-package model;
+package app.labs.content.model;
 
 import java.sql.Date;
 
@@ -9,7 +9,7 @@ public class Content {
 	private Date lastUpdated;
 	private int fileId;
 	private int recommendCnt;
-
+	private String text;
 	
 	public int getContentId() {
 		return contentId;
@@ -59,4 +59,11 @@ public class Content {
 		this.recommendCnt = recommendCnt;
 	}
 	
-}
+	public String getText() {
+		return text;
+	}
+	
+	public void getText(String text) {
+		this.text = text;
+	}
+ }
