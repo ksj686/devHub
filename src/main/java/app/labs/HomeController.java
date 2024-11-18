@@ -24,4 +24,9 @@ public class HomeController {
 	public String profileIndex() {
 		 return "thymeleaf/profile/home";
 	 }
+	
+	@GetMapping("/message")
+	public String messageIndex() {
+		 return "thymeleaf/message/home";
+	 }
 }

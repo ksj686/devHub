@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{/thymeleaf/default_layout}">
+	
+<th:block layout:fragment="css">
+    <link rel="stylesheet" href="/css/message/sent.css" />
+</th:block>
+
+<div layout:fragment="content">
+    <h1 class="page-title">보낸 메시지 목록</h1>
+    <table class="message-table">
+        <thead>
+            <tr>
+                <th class="table-header">메시지 ID</th>
+                <th class="table-header">받는 사람 ID</th>
+                <th class="table-header">내용</th>
+                <th class="table-header">작성일자</th>
+                <th class="table-header">수신 확인</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="message : ${sentMessages}" class="message-row">
+                <td th:text="${message.messageId}" class="table-cell"></td>
+                <td th:text="${message.receiverId}" class="table-cell"></td>
+									   
+																							 
+                <td class="table-cell"><a th:href="@{/message/{messageId}/{viewerId}(messageId=${message.messageId}, viewerId=${message.senderId})}" th:utext="${message.text}" class="message-link"></a></td>
+																		   
+					 
+                <td th:text="${message.dateCreated}" class="table-cell"></td>
+                <td th:text="${message.dateRead}" class="table-cell"></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+</html>
