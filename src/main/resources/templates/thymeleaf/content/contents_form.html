@@ -1,0 +1,21 @@
+<!-- content-form.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Content</title>
+</head>
+<body>
+    <h1>Create New Content</h1>
+<form th:action="@{/contents}" th:object="${content}" method="post">
+    <label for="userId">User ID:</label>
+    <input type="text" id="userId" name="userId" th:value="${content.userId}" required />
+
+    <label for="text">Content:</label>
+    <textarea id="text" name="text" th:value="${content.text}" required></textarea>
+
+    <button type="submit">Submit</button>
+</form>
+
+</body>
+</html>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="app.labs.content.dao.ContentRepository">
+
+    <select id="getContentInfo" resultType="app.labs.content.model.Content">
+        SELECT 
+            CONTENT_ID AS contentId,
+            USER_ID AS userId,
+            DATE_CREATED AS dateCreated,
+            TEXT AS text,
+            LAST_UPDATED AS lastUpdated,
+            FILE_ID AS fileId,
+            RECOMMEND AS recommendCnt
+        FROM CONTENT 
+        WHERE CONTENT_ID = #{contentId}
+    </select>
+
+    <insert id="createContent" parameterType="app.labs.content.model.Content">
+        INSERT INTO CONTENT (CONTENT_ID, USER_ID, DATE_CREATED, TEXT, LAST_UPDATED, FILE_ID, RECOMMEND)
+        VALUES (
+            #{contentId},
+            #{userId},
+            #{dateCreated},
+            #{text, jdbcType=CLOB},
+            #{lastUpdated},
+            #{fileId},
+            #{recommendCnt}
+        )
+    </insert>
+
+    <update id="editContent" parameterType="app.labs.content.model.Content">
+        UPDATE CONTENT
+        SET 
+            TEXT = #{text, jdbcType=CLOB}, 
+            LAST_UPDATED = #{lastUpdated}
+        WHERE CONTENT_ID = #{contentId}
+    </update>
+
+    <delete id="deleteContent" parameterType="int">
+        DELETE FROM CONTENT WHERE CONTENT_ID = #{contentId}
+    </delete>
+
+    <select id="getAllContents" resultType="app.labs.content.model.Content">
+        SELECT 
+            CONTENT_ID AS contentId,
+            USER_ID AS userId,
+            DATE_CREATED AS dateCreated,
+            TEXT AS text,
+            LAST_UPDATED AS lastUpdated,
+            FILE_ID AS fileId,
+            RECOMMEND AS recommendCnt
+        FROM CONTENT
+    </select>
+
+</mapper>

@@ -23,7 +23,7 @@ public class Content {
 		return userId;
 	}
 	
-	public void setUserID(String userId) {
+	public void setUserId(String userId) {
 		this.userId = userId;
 	}
 	
@@ -63,7 +63,7 @@ public class Content {
 		return text;
 	}
 	
-	public void getText(String text) {
+	public void setText(String text) {
 		this.text = text;
 	}
  }

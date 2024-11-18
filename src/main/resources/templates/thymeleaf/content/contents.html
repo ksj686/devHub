@@ -1,0 +1,23 @@
+<!-- contents.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Contents</title>
+</head>
+<body>
+    <h1>Contents List</h1>
+    <a href="/new">Create New Content</a> <!-- 새로운 글 작성 페이지 링크 -->
+
+<div id="content_list">
+    <ul>
+        <li th:each="content : ${contents}">
+            <a th:href="@{/contents/{contentId}(contentId=${content.contentId})}" 
+               th:text="${content.text}">Content Text</a>
+            <span th:text="${content.dateCreated}">Created Date</span>
+        </li>
+    </ul>
+</div>
+
+</body>
+</html>
