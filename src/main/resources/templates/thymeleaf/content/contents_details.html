@@ -1,0 +1,28 @@
+<!-- content-details.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Content Details</title>
+</head>
+<body>
+    <h1 th:text="${content.title}">Title</h1>
+    <p th:text="${content.text}">Content text</p>
+
+  	<button th:attr="onclick='location.href=\'/contents/edit/' + [[${content.contentId}]]'" >Edit</button>
+	<button th:attr="onclick='deleteContent(' + [[${content.contentId}]] + ')'" >Delete</button>
+
+    <script>
+        function deleteContent(contentId) {
+            if (confirm('Are you sure you want to delete this content?')) {
+                fetch(`/contents/${contentId}`, { method: 'DELETE' })
+                    .then(() => {
+                        alert('Content deleted successfully!');
+                        window.location.href = '/contents';
+                    })
+                    .catch(() => alert('Failed to delete content.'));
+            }
+        }
+    </script>
+</body>
+</html>
