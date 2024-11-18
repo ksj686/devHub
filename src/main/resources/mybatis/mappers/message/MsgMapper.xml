@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="app.labs.message.dao.MsgRepository">
+
+    <!-- 보낸 메시지 목록 조회 -->
+    <select id="getSentMessages" parameterType="String" resultType="app.labs.message.model.Msg">
+        SELECT MESSAGE_ID AS messageId,
+               SENDER_ID AS senderId,
+               RECEIVER_ID AS receiverId,
+               TEXT AS text,
+               DATE_CREATED AS dateCreated,
+               DATE_READ AS dateRead
+        FROM MESSAGE
+        WHERE SENDER_ID = #{senderId}
+        ORDER BY DATE_CREATED DESC
+    </select>
+
+    <!-- 받은 메시지 목록 조회 -->
+    <select id="getReceivedMessages" parameterType="String" resultType="app.labs.message.model.Msg">
+        SELECT MESSAGE_ID AS messageId,
+               SENDER_ID AS senderId,
+               RECEIVER_ID AS receiverId,
+               TEXT AS text,
+               DATE_CREATED AS dateCreated,
+               DATE_READ AS dateRead
+        FROM MESSAGE
+        WHERE RECEIVER_ID = #{receiverId}
+        ORDER BY DATE_CREATED DESC
+    </select>
+
+	 <!-- 메시지 상세 조회 -->
+    <select id="getMsgDetail" parameterType="int" resultType="app.labs.message.model.Msg">
+        SELECT 
+            MESSAGE_ID AS messageId,
+            RECEIVER_ID AS receiverId,
+            SENDER_ID AS senderId,
+            TEXT AS text,
+            DATE_CREATED AS dateCreated,
+            DATE_READ AS dateRead
+        FROM MESSAGE
+        WHERE MESSAGE_ID = #{messageId}
+    </select>
+    
+    <!-- 메시지 수신 확인 -->
+    <update id="updateMessageReadStatus" parameterType="int">
+        UPDATE MESSAGE
+        SET DATE_READ = CURRENT_TIMESTAMP
+        WHERE MESSAGE_ID = #{messageId}
+        AND DATE_READ IS NULL <!-- DATE_READ가 NULL인 경우에만 업데이트 -->
+    </update>
+
+</mapper>

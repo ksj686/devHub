@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <style>
+        /* header 스타일 */
+        header {
+            position: relative; /* 자식 요소의 위치 지정 */
+            padding: 10px 20px; /* 헤더의 여백 */
+            background-color: #f8f9fa; /* 헤더 배경색 */
+        }
+
+        /* 이미지 스타일 */
+        .logo {
+            position: absolute; /* 헤더의 왼쪽 상단에 배치 */
+            top: 10px;
+            left: 10px;
+            width: 50px; /* 이미지 크기 조정 */
+            height: auto;
+        }
+
+        /* 헤더 내부의 버튼 스타일 */
+        .btn {
+            margin-left: 10px; /* 버튼들 간의 여백 */
+        }
+    </style>
+</head>
+
+<body>
+    <div th:fragment="header">
+        <!-- 로고 이미지 영역 -->
+        <img src="/assets/logo.png" alt="Code Connect Logo" class="logo">
+
+        <!-- 헤더 내용 -->
+        header 영역입니다. [[ ${session.userid} ]]
+
+        <!-- 로그인 / 로그아웃 버튼 -->
+        <a href="./login" class="btn btn-success" th:if="${session.userid == null}">로그인</a>
+        <a href="./logout" class="btn btn-success" th:if="${session.userid != null}">로그아웃</a>
+        
+        <hr>
+    </div>
+    
+    <div th:fragment="footer">
+        <hr>
+        footer 영역입니다.
+    </div>
+</body>
+</html>

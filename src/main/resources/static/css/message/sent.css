@@ -1,0 +1,84 @@
+@charset "UTF-8";
+/* 기본 설정 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body.body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
+    line-height: 1.6;
+    padding: 20px;
+    margin: 0;
+}
+
+h1.page-title {
+    text-align: center;
+    font-size: 2em;
+    color: #34495e;
+    margin-bottom: 30px;
+}
+
+/* 테이블 스타일 */
+table.message-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+th.table-header, td.table-cell {
+    padding: 12px;
+    text-align: left;
+    border: 1px solid #ddd;
+    font-size: 1.1em;
+}
+
+th.table-header {
+    background-color: #3498db;
+    color: white;
+}
+
+td.table-cell {
+    font-size: 1em;
+}
+
+/* 링크 스타일 */
+a.message-link {
+    text-decoration: none;
+    color: #3498db;
+    font-weight: bold;
+}
+
+a.message-link:hover {
+    color: #2980b9;
+    text-decoration: underline;
+}
+
+/* 홀수/짝수 행 배경색 */
+tr:nth-child(even).message-row {
+    background-color: #f2f2f2;
+}
+
+tr:nth-child(odd).message-row {
+    background-color: #ffffff;
+}
+
+/* 모바일 대응 */
+@media (max-width: 768px) {
+    table.message-table {
+        font-size: 0.9em;
+    }
+
+    th.table-header, td.table-cell {
+        padding: 8px;
+    }
+
+    h1.page-title {
+        font-size: 1.5em;
+    }
+}
