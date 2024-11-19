@@ -9,7 +9,7 @@ import lombok.ToString;
 @ToString
 public class Msg {
 
-    private int messageId;
+    private String messageId;
     private String receiverId;
     private String senderId;
     private String text;
