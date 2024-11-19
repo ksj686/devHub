@@ -1,0 +1,58 @@
+
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="app.labs.register.dao.MemberRepository">
+
+	<select id="getMemberCount" parameterType="int" resultType="int">
+		SELECT COUNT(*) FROM Member
+		<!-- <if test="deptid != null">
+			 WHERE DEPARTMENT_ID = #{deptid}
+		</if> -->
+	</select>
+	<select id="getAllMembers" resultType="app.labs.register.model.Member">
+      USER_ID, USER_PWD, USER_NAME, EMAIL, PHONE_NUMBER,
+            FROM MEMBER
+</select>
+	
+		
+	 <update id="updateMember" parameterType="app.labs.register.model.Member">
+		UPDATE MEMBER 
+    SET USER_ID=#{userId}, USER_PWD=#{userPwd}, USER_NAME=#{userName}, EMAIL=#{email}, 
+        PHONE_NUMBER=#{phoneNumber}, USER_STATUS=#{userStatus}, LAST_LOGIN=#{lastLogin}, 
+        COURSE_ID=#{courseId}, IMAGE_FILE=#{imageFile}
+    WHERE IDX=#{idx}
+	</update> 
+	<insert id="insertMember" parameterType="app.labs.register.model.Member">
+    INSERT INTO MEMBER (
+        USER_ID, USER_PWD, USER_NAME, EMAIL, PHONE_NUMBER
+        <!-- ,IMAGE_FILE -->
+        )
+    VALUES (
+        #{userId}, #{userPwd}, #{userName}, #{email}, #{phoneNumber}
+        <!-- ,#{imageFile} -->
+        )
+</insert>
+
+	
+	 <!--  <delete id="deleteMember">
+		DELETE FROM EMPLOYEES 
+		WHERE EMPLOYEE_ID=#{empid} AND EMAIL=#{email}
+	</delete>-->
+	<select id="findByUserId" parameterType="string" resultType="app.labs.register.model.Member">
+    SELECT IDX, USER_ID, USER_PWD, USER_NAME, EMAIL, PHONE_NUMBER,
+           SIGNUP_DATE, USER_STATUS, LAST_LOGIN, COURSE_ID, IMAGE_FILE
+    FROM MEMBER
+    WHERE USER_ID = #{userId}
+</select>
+	
+	
+	<select id="loginMember" parameterType="app.labs.register.model.Member" resultType="app.labs.register.model.Member">
+    SELECT IDX, USER_ID, USER_PWD, USER_NAME, EMAIL, PHONE_NUMBER,
+           
+    FROM MEMBER
+    WHERE USER_ID = #{userId}
+      AND USER_PWD = #{userPwd}
+</select>
+
+</mapper>
