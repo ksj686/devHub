@@ -11,8 +11,8 @@
                TEXT AS text,
                DATE_CREATED AS dateCreated,
                DATE_READ AS dateRead
-        FROM MESSAGE
-        WHERE SENDER_ID = #{senderId}
+        FROM SENT_MESSAGE
+        WHERE SENDER_ID = #{userId}
         ORDER BY DATE_CREATED DESC
     </select>
 
@@ -24,30 +24,81 @@
                TEXT AS text,
                DATE_CREATED AS dateCreated,
                DATE_READ AS dateRead
-        FROM MESSAGE
-        WHERE RECEIVER_ID = #{receiverId}
+        FROM RECEIVED_MESSAGE
+        WHERE RECEIVER_ID = #{userId}
         ORDER BY DATE_CREATED DESC
     </select>
 
-	 <!-- 메시지 상세 조회 -->
-    <select id="getMsgDetail" parameterType="int" resultType="app.labs.message.model.Msg">
-        SELECT 
-            MESSAGE_ID AS messageId,
-            RECEIVER_ID AS receiverId,
-            SENDER_ID AS senderId,
-            TEXT AS text,
-            DATE_CREATED AS dateCreated,
-            DATE_READ AS dateRead
-        FROM MESSAGE
+    <!-- 보낸 메시지 상세 조회 -->
+    <select id="getSentMsgDetail" parameterType="String" resultType="app.labs.message.model.Msg">
+			   
+        SELECT MESSAGE_ID AS messageId,
+               SENDER_ID AS senderId,
+               RECEIVER_ID AS receiverId,
+               TEXT AS text,
+               DATE_CREATED AS dateCreated,
+               DATE_READ AS dateRead
+        FROM SENT_MESSAGE
+        WHERE MESSAGE_ID = #{messageId}
+    </select>
+
+    <!-- 받은 메시지 상세 조회 -->
+    <select id="getReceivedMsgDetail" parameterType="String" resultType="app.labs.message.model.Msg">
+        SELECT MESSAGE_ID AS messageId,
+               SENDER_ID AS senderId,
+               RECEIVER_ID AS receiverId,
+               TEXT AS text,
+               DATE_CREATED AS dateCreated,
+               DATE_READ AS dateRead
+        FROM RECEIVED_MESSAGE
         WHERE MESSAGE_ID = #{messageId}
     </select>
     
-    <!-- 메시지 수신 확인 -->
-    <update id="updateMessageReadStatus" parameterType="int">
-        UPDATE MESSAGE
+    <!-- 받은 메시지 저장 -->
+	<insert id="insertReceivedMsg" parameterType="app.labs.message.model.Msg">
+		INSERT INTO RECEIVED_MESSAGE (
+			MESSAGE_ID, RECEIVER_ID, SENDER_ID, TEXT
+		)
+		VALUES (
+			#{messageId}, #{receiverId}, #{senderId}, #{text, jdbcType=CLOB}
+		)
+	</insert>
+	
+	<!-- 보낸 메시지 저장 -->
+	<insert id="insertSentMsg" parameterType="app.labs.message.model.Msg">
+		INSERT INTO SENT_MESSAGE (
+			MESSAGE_ID, RECEIVER_ID, SENDER_ID, TEXT
+		)
+		VALUES (
+			#{messageId}, #{receiverId}, #{senderId}, #{text, jdbcType=CLOB}
+		)
+	</insert>
+	
+	<!-- 보낸 메시지 수신 확인(받은 사람이 읽었을 때 실행됨) -->
+    <update id="updateSentMsgReadStatus" parameterType="String">
+        UPDATE SENT_MESSAGE
         SET DATE_READ = CURRENT_TIMESTAMP
         WHERE MESSAGE_ID = #{messageId}
         AND DATE_READ IS NULL <!-- DATE_READ가 NULL인 경우에만 업데이트 -->
     </update>
-
+	
+	<!-- 받은 메시지 수신 확인 -->
+	<update id="updateReceivedMsgReadStatus" parameterType="String">
+        UPDATE RECEIVED_MESSAGE
+        SET DATE_READ = CURRENT_TIMESTAMP
+        WHERE MESSAGE_ID = #{messageId}
+        AND DATE_READ IS NULL <!-- DATE_READ가 NULL인 경우에만 업데이트 -->
+    </update>
+    
+    <!-- 받은 메시지 삭제 -->
+    <delete id="deleteSent" parameterType="String">
+		DELETE FROM SENT_MESSAGE 
+		WHERE MESSAGE_ID = #{messageId}
+	</delete>
+	
+	<!-- 보낸 메시지 삭제 -->
+	<delete id="deleteReceived" parameterType="String">
+		DELETE FROM RECEIVED_MESSAGE 
+		WHERE MESSAGE_ID = #{messageId}
+	</delete>
 </mapper>

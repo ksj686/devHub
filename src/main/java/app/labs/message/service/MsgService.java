@@ -4,8 +4,13 @@ import java.util.List;
 import app.labs.message.model.Msg;
 
 public interface MsgService {
-    List<Msg> getSentMessages(String senderId);
-    List<Msg> getReceivedMessages(String receiverId);
-    void updateMessageReadStatus(int messageId);
-    Msg getMsgDetail(int messageId, String viewerId);  // 메시지 상세 조회
+    List<Msg> getSentMessages(String userId);
+    List<Msg> getReceivedMessages(String userId);
+//    void updateMessageReadStatus(int messageId);
+    Msg getSentMsgDetail(String messageId, String viewerId);  // 보낸 메시지 상세 조회
+    Msg getReceivedMsgDetail(String messageId, String viewerId);  // 받은 메시지 상세 조회
+//    Msg getMsgDetail(int messageId, String viewerId);  // 메시지 상세 조회
+    int insertMsg(Msg msg);
+    int deleteSent(List<String> messageIds);
+    int deleteReceived(List<String> messageIds);
 }

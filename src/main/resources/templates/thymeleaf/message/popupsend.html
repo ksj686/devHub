@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+    <meta charset="UTF-8">
+    <title>메시지 작성</title>
+    <link rel="stylesheet" href="/css/message/compose.css"/>
+</head>
+
+<body>
+    <!-- <div id="popupHeader">
+        메시지 작성
+    </div> -->
+    <!-- 메시지 작성 폼 -->
+    <form id="composeForm" action="/message/insert" method="POST">
+        <label for="receiverId">받는 사람 ID:</label>
+        <input type="text" id="receiverId" name="receiverId" required />
+        
+        <label for="messageText">내용:</label>
+        <textarea id="messageText" name="messageText" rows="5" required></textarea>
+        
+        <button type="submit" class="send-btn">전송</button>
+    </form>
+    
+    
+</body>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- <script type="text/javascript" src="/js/message/popupsend.js"></script> -->
+<th:block layout:fragment="script">
+	<script type="text/javascript" th:src="@{/js/message/popupsend.js}"></script>
+</th:block>
+</html>

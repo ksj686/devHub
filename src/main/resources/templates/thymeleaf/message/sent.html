@@ -8,31 +8,60 @@
 </th:block>
 
 <div layout:fragment="content">
+	<!-- 받은 메시지와 보낸 메시지 링크 -->
+    <div class="message-links">
+        <a href="/message/received" class="message-link">받은 메시지</a> |
+        <a href="/message/sent" class="message-link">보낸 메시지</a>
+    </div>
+
     <h1 class="page-title">보낸 메시지 목록</h1>
+
+    <!-- 삭제 버튼 (전체 선택 시) -->
+    <div class="button-container">
+        <button id="deleteSelected" class="delete-btn">선택한 메시지 삭제</button>
+        <button id="composeMessage" class="compose-btn" onclick="openComposeMessageWindow()">메시지 작성</button> <!-- 메시지 작성 버튼 추가 -->
+    </div>
+
+    <!-- 메시지 목록 테이블 -->
     <table class="message-table">
         <thead>
             <tr>
-                <th class="table-header">메시지 ID</th>
+                <th><input type="checkbox" id="selectAll" class="select-all"/></th> <!-- 전체 체크박스 -->
                 <th class="table-header">받는 사람 ID</th>
                 <th class="table-header">내용</th>
                 <th class="table-header">작성일자</th>
                 <th class="table-header">수신 확인</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody id="messageTableBody">
             <tr th:each="message : ${sentMessages}" class="message-row">
-                <td th:text="${message.messageId}" class="table-cell"></td>
+                <td><input type="checkbox" name="messageIds" th:value="${message.messageId}" class="message-checkbox"/></td>
                 <td th:text="${message.receiverId}" class="table-cell"></td>
-									   
-																							 
-                <td class="table-cell"><a th:href="@{/message/{messageId}/{viewerId}(messageId=${message.messageId}, viewerId=${message.senderId})}" th:utext="${message.text}" class="message-link"></a></td>
-																		   
-					 
+			
+																				 
+                <!-- <td class="table-cell"><a th:href="@{/message/{messageId}/{viewerId}(messageId=${message.messageId}, viewerId=${message.senderId})}" th:utext="${message.text}" class="message-link"></a></td> -->
+                <td class="table-cell"><a th:href="@{/message/sent/detail/{messageId}(messageId=${message.messageId})}" th:utext="${message.text}" class="message-link"></a></td>
+																	 
+	  
                 <td th:text="${message.dateCreated}" class="table-cell"></td>
                 <td th:text="${message.dateRead}" class="table-cell"></td>
+                <!-- <input type="hidden" name="messageId" th:value="${message.messageId}"/> --> <!-- 메시지 ID는 숨김 처리 -->
             </tr>
         </tbody>
     </table>
+    
+    
+    <!-- 검색 기능 -->
+    <div class="search-bar">
+        <select id="searchFilter" class="search-select">
+            <option value="content">내용</option>
+            <option value="receiverId">받는 사람 ID</option>
+        </select>
+        <input type="text" id="searchText" class="search-input" placeholder="검색어를 입력하세요"/>
+        <button id="searchButton" class="search-button">검색</button>
+    </div>
 </div>
-
+<th:block layout:fragment="script">
+	<script type="text/javascript" th:src="@{/js/message/sent.js}"></script>
+</th:block>
 </html>

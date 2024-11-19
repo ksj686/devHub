@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+		layout:decorate="~{/thymeleaf/default_layout}">
+
+<div layout:fragment="content">
+    <h1>메시지 상세</h1>
+    <a th:href="@{/message/received}" class="btn btn-primary">목록으로 돌아가기</a>
+    <p><strong>보낸 사람:</strong> <span th:text="${msg.senderId}"></span></p>
+    <p><strong>받은 사람:</strong> <span th:text="${msg.receiverId}"></span></p>
+    <p><strong>작성일:</strong> <span th:text="${msg.dateCreated}"></span></p>
+    <p><strong>수신확인:</strong> <span th:text="${msg.dateRead}"></span></p>
+    <p><strong>내용:</strong></p>
+    <pre th:text="${msg.text}"></pre> <!-- 전체 메시지 내용 표시 -->
+</div>
+
+</html>

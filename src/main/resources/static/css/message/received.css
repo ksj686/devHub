@@ -1,4 +1,3 @@
-@charset "UTF-8";
 /* 기본 설정 */
 * {
     margin: 0;
@@ -29,8 +28,8 @@ table.message-table {
     margin-top: 20px;
     background-color: #fff;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-top: 1px solid #ddd; 
-    border-bottom: 1px solid #ddd; 
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
 }
 
 th.table-header, td.table-cell {
@@ -108,20 +107,6 @@ tr:nth-child(odd).message-row {
 
 .delete-btn:hover {
     background-color: #ff3e3e;
-}
-
-.compose-btn {
-    padding: 10px 20px;
-    background-color: #3498db;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 20px;
-}
-
-.compose-btn:hover {
-    background-color: #2980b9;
 }
 
 /* 검색 기능 스타일 */
