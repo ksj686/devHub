@@ -1,28 +1,79 @@
 <!-- content-details.html -->
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <title>Content Details</title>
 </head>
 <body>
     <h1 th:text="${content.title}">Title</h1>
-    <p th:text="${content.text}">Content text</p>
+     <p><strong>Author:</strong> <span th:text="${content.userId}">User ID</span></p>
+    <p><strong>Date Created:</strong> <span th:text="${content.dateCreated}">Date Created</span></p>
+    <p><strong>Last Updated:</strong> <span th:text="${content.lastUpdated}">Last Updated</span></p>
+    <p><strong>Content:</strong></p>
+    <p th:text="${content.text}">Content Text</p>
+    
+<!--     <p>
+        <strong>Recommendations:</strong>
+        <span id="recommend-count" th:text="${content.recommendCnt}">0</span>
+    </p>
+    <button id="recommend-button">Recommend</button> -->
 
-  	<button th:attr="onclick='location.href=\'/contents/edit/' + [[${content.contentId}]]'" >Edit</button>
-	<button th:attr="onclick='deleteContent(' + [[${content.contentId}]] + ')'" >Delete</button>
+	<button th:onclick="'location.href=\'/contents/edit/' + '[[${content.contentId}]]'" >Edit</button>
+	<button th:onclick="'deleteContent(' + ${content.contentId} + ', \'exampleUserId\')'">Delete</button>
 
-    <script>
-        function deleteContent(contentId) {
-            if (confirm('Are you sure you want to delete this content?')) {
-                fetch(`/contents/${contentId}`, { method: 'DELETE' })
-                    .then(() => {
-                        alert('Content deleted successfully!');
+<script>  
+    
+    function deleteContent(contentId, userId) {
+        if (confirm('이 글을 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다')) {
+            fetch(`/contents/${contentId}?userId=${userId}`, { method: 'DELETE' })
+                .then(response => {
+                    if (response.ok) {
+                        alert('성공적으로 삭제되었습니다!');
                         window.location.href = '/contents';
-                    })
-                    .catch(() => alert('Failed to delete content.'));
-            }
+                    } else {
+                        response.text().then(error => {
+                            alert('Failed to delete content: ' + error);
+                        });
+                    }
+                })
+                .catch(() => alert('Error occurred while deleting content.'));
         }
+    }
+        
+/*     document.getElementById('recommend-button').addEventListener('click', function () {
+        const contentId = [[${content.contentId}]];
+        
+        console.log("Content ID:", contentId);
+        
+        fetch(`/contents/${contentId}/recommend`, {
+            method: 'POST'
+        })
+        .then(response => {
+            if (response.ok) {
+                return response.text(); // 서버 응답을 텍스트로 처리
+            } else {
+                throw new Error('Failed to recommend the content. Status code: ' + response.status);
+            }
+        })
+        .then(updatedCountText => {
+            // 응답된 텍스트를 숫자로 변환
+            const updatedCount = parseInt(updatedCountText, 10);
+            if (!isNaN(updatedCount)) {
+                // 추천 수 업데이트
+                document.getElementById('recommend-count').textContent = updatedCount;
+            } else {
+                console.error('Invalid response: expected a number, got ', updatedCountText);
+            }
+        })
+        .catch(error => {
+            console.error("Error occurred:", error);
+            alert('Error occurred while processing recommendation.');
+        });
+    }); */
+
     </script>
+
 </body>
 </html>

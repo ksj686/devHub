@@ -11,40 +11,44 @@
             TEXT AS text,
             LAST_UPDATED AS lastUpdated,
             FILE_ID AS fileId,
-            RECOMMEND AS recommendCnt
+            RECOMMEND AS recommendCnt,
+            TITLE AS title
         FROM CONTENT 
         WHERE CONTENT_ID = #{contentId}
     </select>
 
     <insert id="createContent" parameterType="app.labs.content.model.Content">
-        INSERT INTO CONTENT (CONTENT_ID, USER_ID, DATE_CREATED, TEXT, LAST_UPDATED, FILE_ID, RECOMMEND)
+        INSERT INTO CONTENT (USER_ID, TITLE, DATE_CREATED, TEXT, LAST_UPDATED, FILE_ID)
         VALUES (
-            #{contentId},
             #{userId},
+            #{title},
             #{dateCreated},
             #{text, jdbcType=CLOB},
             #{lastUpdated},
-            #{fileId},
-            #{recommendCnt}
+            #{fileId}
         )
     </insert>
 
     <update id="editContent" parameterType="app.labs.content.model.Content">
         UPDATE CONTENT
         SET 
+        	TITLE = #{title},
             TEXT = #{text, jdbcType=CLOB}, 
             LAST_UPDATED = #{lastUpdated}
         WHERE CONTENT_ID = #{contentId}
     </update>
 
-    <delete id="deleteContent" parameterType="int">
-        DELETE FROM CONTENT WHERE CONTENT_ID = #{contentId}
+    <delete id="deleteContent" parameterType="map">
+        DELETE FROM CONTENT 
+        WHERE CONTENT_ID = #{contentId} 
+        	AND USER_ID = #{userId}
     </delete>
 
     <select id="getAllContents" resultType="app.labs.content.model.Content">
         SELECT 
             CONTENT_ID AS contentId,
             USER_ID AS userId,
+            TITLE AS title,
             DATE_CREATED AS dateCreated,
             TEXT AS text,
             LAST_UPDATED AS lastUpdated,
@@ -52,5 +56,17 @@
             RECOMMEND AS recommendCnt
         FROM CONTENT
     </select>
+    
+    <update id = "increaseRecommend" parameterType="int">
+    	UPDATE CONTENT
+		SET RECOMMEND = RECOMMEND + 1
+		WHERE CONTENT_ID = #{contentId}
+    </update>
+    
+    <select id="getRecommendCount" resultType="int" parameterType="int">
+  		SELECT RECOMMEND
+  		FROM CONTENT
+	    WHERE CONTENT_ID = #{contentId}
+	</select>
 
 </mapper>
