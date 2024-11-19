@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/thymeleaf/default_layout}">
+<head>
+<div layout:fragment="content">
+    <title>회원가입</title>
+</head>
+<body>
+    <h1>회원정보 입력</h1>
+    <form action="/members/insert" method="post">
+        <table border="1">
+            <tr>
+                <th>사용자명</th>
+                <td><input type="text" name="userId" required></td>
+            </tr>
+            <tr>
+                <th>비밀번호</th>
+                <td><input type="password" name="userPwd" required></td>
+            </tr>
+            <tr>
+                <th>이름</th> <!-- 추가 -->
+                <td><input type="text" name="userName"></td>
+            </tr>
+            <tr>
+                <th>이메일</th>
+                <td><input type="email" name="email" required></td>
+            </tr>
+            <tr>
+                <th>전화번호</th>
+                <td><input type="text" name="phoneNumber"></td>
+            </tr>
+                  
+            <tr>
+                <th>이미지 파일</th> <!-- 추가 -->
+                <td><input type="file" name="imageFile"></td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <input type="submit" value="저장">
+                    <input type="reset" value="취소">
+                </td>
+            </tr>
+        </table>
+    </form>
+</body>
+</div>
+</html>
