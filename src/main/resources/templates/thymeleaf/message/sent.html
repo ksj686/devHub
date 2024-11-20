@@ -4,8 +4,9 @@
 	layout:decorate="~{/thymeleaf/default_layout}">
 	
 <th:block layout:fragment="css">
-    <link rel="stylesheet" href="/css/message/sent.css" />
+    <link rel="stylesheet" th:href="@{/css/message/sent.css}" />
 </th:block>
+
 
 <div layout:fragment="content">
 	<!-- 받은 메시지와 보낸 메시지 링크 -->
