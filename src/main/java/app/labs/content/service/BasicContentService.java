@@ -1,8 +1,7 @@
 package app.labs.content.service;
 
 import java.util.List;
-import java.time.LocalDateTime;
-
+import java.sql.Timestamp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,21 +21,28 @@ public class BasicContentService implements ContentService {
 
 	@Override
 	public void createContent(Content content) {
-        content.setDateCreated(LocalDateTime.now());
-        content.setLastUpdated(LocalDateTime.now());
+        content.setDateCreated(new Timestamp(System.currentTimeMillis()));
+        content.setLastUpdated(new Timestamp(System.currentTimeMillis()));
 		contentRepository.createContent(content);
 	}
 
 	@Override
 	public void editContent(Content content) {
-        content.setLastUpdated(LocalDateTime.now());
+        content.setLastUpdated(new Timestamp(System.currentTimeMillis()));
 		contentRepository.editContent(content);
 	}
 
 	@Override
-	public void deleteContent(int contentId, String userId) {
-		contentRepository.deleteContent(contentId, userId);
-	}
+    public boolean deleteContent(int contentId, String enteredUserId) {
+        Content content = contentRepository.getContentInfo(contentId); // 글 정보 조회
+      
+        // 글의 userId와 입력받은 userId 비교
+        if (content != null && content.getUserId().equals(enteredUserId)) { 
+            contentRepository.deleteContent(contentId); // 삭제 수행
+            return true; // 삭제 성공
+        }
+        return false; // 삭제 실패: userId 불일치
+    }
 
 	@Override
 	public List<Content> getAllContents() {

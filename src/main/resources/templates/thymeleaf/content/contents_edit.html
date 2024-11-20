@@ -1,23 +1,20 @@
 <!-- content-form.html -->
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Edit Content</title>
-</head>
-<body>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{/thymeleaf/default_layout}">
+
+<div layout:fragment="content">
     <h1>Edit Content</h1>
    <form th:action="@{/contents/edit/{id}(id=${content.contentId})}" th:object="${content}" method="post">
     
-       <label for="title">Title:</label>
+       <label for="title">제목:</label>
        <input type="text" id="title" name="title" th:value="${content.title}" required />
 
-        <label for="text">Content:</label>
+        <label for="text">내용:</label>
         <textarea id="text" name="text" required th:text="${content.text}"></textarea>
 
-        <button type="submit">Save</button>
-    <button type="submit">Submit</button>
-</form>
-
-</body>
+        <button type="submit">저장</button>
+	</form>
+</div>
 </html>

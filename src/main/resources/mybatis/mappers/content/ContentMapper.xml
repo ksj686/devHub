@@ -41,7 +41,6 @@
     <delete id="deleteContent" parameterType="map">
         DELETE FROM CONTENT 
         WHERE CONTENT_ID = #{contentId} 
-        	AND USER_ID = #{userId}
     </delete>
 
     <select id="getAllContents" resultType="app.labs.content.model.Content">
@@ -55,6 +54,7 @@
             FILE_ID AS fileId,
             RECOMMEND AS recommendCnt
         FROM CONTENT
+        ORDER BY DATE_CREATED DESC
     </select>
     
     <update id = "increaseRecommend" parameterType="int">
