@@ -11,11 +11,10 @@ import app.labs.register.model.Member;
 @Mapper
 public interface MemberRepository {
 	int getMemberCount();
-	int getMemberCount(@Param("deptid") int deptid);
+	int getMemberCount(@Param("User_id") String userName);
 	List<Member> getMemberList();
-	Member getMemberInfo
-	(int empid);
-	void updateMember(String userName, String email, String phoneNumber, String userId);
+	Member getMemberInfo(String userId);
+	void updateMember(@Param("userName") String userName, @Param("email") String email, @Param("phoneNumber") String phoneNumber, @Param("userId") String userId);
 	void insertMember(Member member);
 	//void deleteJobHistory(int memberid);
 	//int deleteMember(@Param("memberid") int memberid, @Param("email") String email);

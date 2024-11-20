@@ -3,26 +3,34 @@ package app.labs.register.service;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import app.labs.register.dao.MemberRepository;
 import app.labs.register.model.Member;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
+@Slf4j
+@Transactional
 public class BasicMemberService implements MemberService {
 
 	@Autowired
 	MemberRepository memberRepository;
+	
+	private static final Logger logger = LoggerFactory.getLogger(BasicMemberService.class);
+
 
 	@Override
 	public int getMemberCount() {
-		return memberRepository.getMemberCount();
+	    return memberRepository.getMemberCount();
 	}
 
-	@Override
-	public int getMemberCount(int deptid) {
-		return memberRepository.getMemberCount(deptid);
+	public int getMemberCount(String userName) {
+		return memberRepository.getMemberCount(userName);
 	}
 
 	@Override
@@ -30,16 +38,20 @@ public class BasicMemberService implements MemberService {
 		return memberRepository.getMemberList();
 	}
 
-	@Override
-	public Member getMemberInfo(int empid) {
-		return memberRepository.getMemberInfo(empid);
+
+	
+	public Member getMemberInfo(String userId) {
+		return memberRepository.getMemberInfo(userId);
 	}
 
 	
 	
-	  public void updateMember(Member member) {
-	  memberRepository.updateMember(member.getUserName(), member.getEmail(),
-	  member.getPhoneNumber(), member.getUserId()); }
+	@Override
+    public void updateMember(Member member) {
+        logger.debug("Updating member: {}", member);
+        memberRepository.updateMember(member.getUserName(), member.getEmail(), member.getPhoneNumber(), member.getUserId());
+        logger.debug("Member updated: {}", member);
+    }
 	 
 	 
 
@@ -73,6 +85,14 @@ public class BasicMemberService implements MemberService {
 	public List<Map<String, Object>> getAllPhoneNumbers() {
 		return memberRepository.getAllPhoneNumbers();
 	}
+
+	
+
+	
+
+	
+
+	
 
 
 

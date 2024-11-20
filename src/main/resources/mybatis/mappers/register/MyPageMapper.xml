@@ -1,0 +1,19 @@
+
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="app.labs.register.dao.MyPageContentRepository">
+    <!-- 사용자가 작성한 게시글 목록을 가져오는 쿼리 -->
+    <select id="findContentsByUserId" parameterType="string" resultType="app.labs.register.model.MyPageContent">
+        SELECT content_id AS contentId, user_id AS userId, title, date_created AS dateCreated, last_updated AS lastUpdated, file_id AS fileId, recommend AS recommendCnt, text
+        FROM Content
+        WHERE user_id = #{userId}
+    </select>
+
+    <!-- 사용자가 작성한 댓글 목록을 가져오는 쿼리 -->
+    <select id="findCommentsByUserId" parameterType="string" resultType="app.labs.register.model.PostComment">
+        SELECT comment_id AS commentId, user_id AS userId, content_id AS contentId, text, date_created AS dateCreated
+        FROM PostComment
+        WHERE user_id = #{userId}
+    </select>
+</mapper>
