@@ -1,23 +1,34 @@
 <!-- contents.html -->
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Contents</title>
-</head>
-<body>
-    <h1>Contents List</h1>
-    <a href="contents/new">새로운 글 작성</a> <!-- 새로운 글 작성 페이지 링크 -->
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{/thymeleaf/default_layout}">
 
-<div id="content_list">
-    <ul>
-        <li th:each="content : ${contents}">
-            <a th:href="@{/contents/{contentId}(contentId=${content.contentId})}" 
-               th:text="${content.title}">Content Title</a>
-            <span th:text="${content.userId}">User Id</span>
-        </li>
-    </ul>
+
+<div layout:fragment="content">
+    <h1 class="page-title">글 목록</h1>
+  
+    <div class="contents-links">
+    	<a href="contents/new" class = "contents-link">새로운 글 작성</a> 
+	</div>
+	
+	<table class = "contents-table">
+		<thead>
+			<tr>
+				<th class="table-header">제목</th>
+				<th class="table-header">작성자</th>
+				<th class="table-header">작성일자</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="content : ${contents}" class="contents-row">
+				<td class="table-cell"><a th:href="@{/contents/{contentId}(contentId=${content.contentId})}" 
+					th:utext="${content.title}"></a></td>
+				<td th:text="${content.userId}" class="table-cell"></td>
+				<td th:text="${content.dateCreated}" class="table-cell"></td>
+			</tr>
+		</tbody>
+	</table>
+	
 </div>
-
-</body>
 </html>
