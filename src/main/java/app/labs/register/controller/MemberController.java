@@ -28,6 +28,7 @@ public class MemberController {
 	
     @Autowired
     MemberService memberService;
+    
 
     @GetMapping(value = {"/members", "/members/"})
     public String home(Model model) {
@@ -66,21 +67,20 @@ public class MemberController {
     }
     
    //프로필 메서드 
-    @GetMapping("/members/profile")
+    @GetMapping("/members/mypage")
     public String showMemberProfile(HttpSession session, Model model) {
         String userId = (String) session.getAttribute("userid");
         if (userId != null) {
             Member member = memberService.findByUserId(userId);
             model.addAttribute("member", member);
-            return "thymeleaf/register/profile"; // Thymeleaf 템플릿 경로
+            return "thymeleaf/register/mypage"; // Thymeleaf 템플릿 경로
         } else {
             return "redirect:/members/login";
         }
     }
     
 	
-	  //프로필 수정 메서드
-	  
+	  //프로필 수정 메서드  
 	  @GetMapping("/members/edit") public String showEditProfileForm(HttpSession
 	  session, Model model) { String userId = (String)
 	  session.getAttribute("userid");
@@ -97,11 +97,12 @@ public class MemberController {
     public String updateProfile(@ModelAttribute Member member, HttpSession session, RedirectAttributes redirectAttributes) {
         String userId = (String) session.getAttribute("userid");
         logger.debug("POST /members/edit - Session userId: {}", userId);
+        logger.debug("Updating member: {}", member);
 
         if (userId != null && userId.equals(member.getUserId())) {
             memberService.updateMember(member);
             redirectAttributes.addFlashAttribute("message", "수정 되었습니다!");
-            return "redirect:/members/profile";
+            return "redirect:/members/mypage";
         } else {
             return "redirect:/members/login";
         }
@@ -120,7 +121,7 @@ public class MemberController {
             if (member.getUserPwd().equals(userPwd)) {
                 session.setMaxInactiveInterval(600); // 10분
                 session.setAttribute("userid", userId);
-                return "redirect:/members/profile";
+                return "redirect:/members/mypage";
             } else {
                 System.out.println("비밀번호가 일치하지 않습니다."); // 로그 추가
                 session.invalidate();
@@ -135,12 +136,14 @@ public class MemberController {
         }
     }
 
-    @GetMapping("/members/logout")
-    public String logoutMember(HttpSession session) {
+   @GetMapping("/members/logout")
+   public String logoutMember(HttpSession session) {
         session.invalidate();
         return "redirect:/members/list";
     }
 }
+
+    
 
 
 //@GetMapping("/members/list")

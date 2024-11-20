@@ -7,9 +7,9 @@ import app.labs.register.model.Member;
 
 public interface MemberService {
 	int getMemberCount();
-	int getMemberCount(int deptid);
+	int getMemberCount(String userName);
 	List<Member> getMemberList();
-	Member getMemberInfo(int empid);
+	Member getMemberInfo(String userId);
 	void updateMember(Member member);
 	void insertMember(Member member);
 	//int deleteMember(int memberid, String email);
