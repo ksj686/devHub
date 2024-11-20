@@ -1,12 +1,11 @@
 <!-- content-details.html -->
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{/thymeleaf/default_layout}">
 
-<head>
-    <meta charset="UTF-8">
-    <title>Content Details</title>
-</head>
-<body>
+<div layout:fragment="content">
+
     <h1 th:text="${content.title}">Title</h1>
      <p><strong>Author:</strong> <span th:text="${content.userId}">User ID</span></p>
     <p><strong>Date Created:</strong> <span th:text="${content.dateCreated}">Date Created</span></p>
@@ -19,28 +18,53 @@
         <span id="recommend-count" th:text="${content.recommendCnt}">0</span>
     </p>
     <button id="recommend-button">Recommend</button> -->
-
-	<button th:onclick="'location.href=\'/contents/edit/' + '[[${content.contentId}]]'" >Edit</button>
-	<button th:onclick="'deleteContent(' + ${content.contentId} + ', \'exampleUserId\')'">Delete</button>
-
-<script>  
     
-    function deleteContent(contentId, userId) {
-        if (confirm('이 글을 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다')) {
-            fetch(`/contents/${contentId}?userId=${userId}`, { method: 'DELETE' })
-                .then(response => {
-                    if (response.ok) {
-                        alert('성공적으로 삭제되었습니다!');
-                        window.location.href = '/contents';
-                    } else {
-                        response.text().then(error => {
-                            alert('Failed to delete content: ' + error);
-                        });
-                    }
-                })
-                .catch(() => alert('Error occurred while deleting content.'));
-        }
-    }
+    <button onclick="location.href='/contents'">목록</button>
+
+	<button th:onclick="'location.href=\'/contents/edit/' + ${content.contentId} + '\''">수정</button>
+	<button class="delete-button" th:data-id="${content.contentId}" th:data-user-id="${content.userId}">삭제</button>
+
+</div>
+	<th:block layout:fragment="script">
+	<script>
+   
+	document.addEventListener('DOMContentLoaded', function () {
+	    document.querySelectorAll('.delete-button').forEach(button => {
+	        button.addEventListener('click', function () {
+	            const contentId = this.getAttribute('data-id'); // 글 ID
+	            const originalUserId = this.getAttribute('data-user-id'); // 원래 글의 userId
+	            const enteredUserId = prompt('이 글을 삭제하려면 ID를 입력하세요:'); // userId 입력받기	
+	            if (!enteredUserId) {
+	                alert('글을 삭제하기 위해서는 유저 ID가 필요합니다.');
+	                return;
+	            }	
+	            // 서버로 삭제 요청
+	            fetch(`/contents/${contentId}`, {
+	                method: 'DELETE',
+	                headers: { 'Content-Type': 'application/json' },
+	                body: JSON.stringify({ enteredUserId }) // 입력받은 userId 전달
+	            })
+	            .then(response => {
+	                if (response.ok) {
+	                    alert('글 삭제가 완료되었습니다.');
+	                    window.location.href = '/contents'; // 삭제 후 contents 페이지로 이동
+	                } else if (response.status === 403) {
+	                    alert('입력한 ID가 작성자의 ID와 일치하지 않습니다.');
+	                } else {
+	                    alert('Failed to delete content. Please try again.');
+	                }
+	            })
+	            .catch(error => {
+	                console.error('Error occurred while deleting content:', error);
+	                alert('An error occurred. Please try again.');
+	            });
+	        });
+	    });
+	});
+
+
+
+
         
 /*     document.getElementById('recommend-button').addEventListener('click', function () {
         const contentId = [[${content.contentId}]];
@@ -74,6 +98,5 @@
     }); */
 
     </script>
-
-</body>
+	</th:block>
 </html>
