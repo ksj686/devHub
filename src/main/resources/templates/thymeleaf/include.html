@@ -1,48 +1,59 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <style>
-        /* header 스타일 */
-        header {
-            position: relative; /* 자식 요소의 위치 지정 */
-            padding: 10px 20px; /* 헤더의 여백 */
-            background-color: #f8f9fa; /* 헤더 배경색 */
-        }
+<html xmlns:th="http://www.thymeleaf.org"
+		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 
-        /* 이미지 스타일 */
-        .logo {
-            position: absolute; /* 헤더의 왼쪽 상단에 배치 */
-            top: 10px;
-            left: 10px;
-            width: 50px; /* 이미지 크기 조정 */
-            height: auto;
-        }
 
-        /* 헤더 내부의 버튼 스타일 */
-        .btn {
-            margin-left: 10px; /* 버튼들 간의 여백 */
-        }
-    </style>
-</head>
 
-<body>
-    <div th:fragment="header">
-        <!-- 로고 이미지 영역 -->
-        <img src="/assets/logo.png" alt="Code Connect Logo" class="logo">
-
-        <!-- 헤더 내용 -->
-        header 영역입니다. [[ ${session.userid} ]]
-
-        <!-- 로그인 / 로그아웃 버튼 -->
-        <a href="./login" class="btn btn-success" th:if="${session.userid == null}">로그인</a>
-        <a href="./logout" class="btn btn-success" th:if="${session.userid != null}">로그아웃</a>
+	<div th:fragment="header">
+		<header class="header">
+		    <div class="logo">
+		      <a href="/"><img src="/assets/logo.png" alt="로고"></a>
+		    </div>
+		    <nav class="nav">
+		      <a href="#">공지사항</a>
+		      <a href="#">게시판</a>
+		      <a href="#">Q/A</a>
+		      <a href="#">About Code Connect</a>
+		    </nav>
+		    <div class="right-section">
+				<div class="search-box">
+		        <input type="text" placeholder="검색어를 입력하세요" />
+		        <button>🔍</button>
+			</div>
+			<a href="/members/login" class="btn" th:if="${session.userid == null}">로그인</a>
+			<a href="/members/logout" class="btn" th:if="${session.userid != null}">로그아웃</a>
+			<a href="/members/insert"  th:if="${session.userid == null}">회원가입</a>
+		    </div>
+		</header>
+		  
+		<!-- <img src="/assets/logo.png" alt="Code Connect Logo" class="logo"> -->
+	
+	        <!-- 로그인 / 로그아웃 버튼 -->
+	        <!-- <a href="./login" class="btn btn-success" th:if="${session.userid == null}">로그인</a>
+	        <a href="./logout" class="btn btn-success" th:if="${session.userid != null}">로그아웃</a>
+	      </nav> -->
         
-        <hr>
+        
+		
     </div>
     
+    <div th:fragment="pre-content">
+	    <div class="masthead" style="background-image: url('/assets/home-bg.jpg')">
+			<div class="container position-relative px-4 px-lg-5">
+				<div class="row gx-4 gx-lg-5 justify-content-center">
+					<div class="col-md-10 col-lg-8 col-xl-7">
+						<div class="site-heading">
+							<h1>Code Connect</h1>
+							<span class="subheading">Represent a platform where developers collaborate and communicate through AI technology</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+     </div>
     <div th:fragment="footer">
-        <hr>
-        footer 영역입니다.
+        <footer class="py-5 bg-gray">
+            <div class="container px-4 px-lg-5"><p class="m-0 text-center footer-font-color">Copyright &copy; Code Connect Co. 2024</p></div>
+        </footer>
     </div>
-</body>
 </html>
