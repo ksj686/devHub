@@ -1,6 +1,8 @@
 package app.labs.message.service;
 
 import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,16 +22,22 @@ public class BasicMsgService implements MsgService {
     public List<Msg> getSentMessages(String userId) {
         return msgRepository.getSentMessages(userId);
     }
+    
+	@Override
+	public List<Msg> sentMsgSearch(Map<String, Object> params) {
+//		return msgRepository.sentMsgSearch(userId, searchFilter, searchQuery);
+		return msgRepository.sentMsgSearch(params);
+	}
 
     @Override
     public List<Msg> getReceivedMessages(String userId) {
         return msgRepository.getReceivedMessages(userId);
     }
-
-//    @Override
-//    public void updateMessageReadStatus(int messageId) {
-//    	msgRepository.updateMessageReadStatus(messageId);
-//    }
+    
+	@Override
+	public List<Msg> receivedMsgSearch(Map<String, Object> params) {
+		return msgRepository.receivedMsgSearch(params);
+	}
     
     @Override
     public Msg getSentMsgDetail(String messageId, String viewerId) {
@@ -82,8 +90,11 @@ public class BasicMsgService implements MsgService {
 		});
 		return cnt[0];
 	}
-    
-    
+
+	@Override
+	public void updateExpiredMember() {
+		msgRepository.updateExpiredMember();
+	}
     
 //    @Override
 //    public Msg getMsgDetail(int messageId, String viewerId) {
