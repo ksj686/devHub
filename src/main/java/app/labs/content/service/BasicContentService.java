@@ -2,6 +2,8 @@ package app.labs.content.service;
 
 import java.util.List;
 import java.sql.Timestamp;
+
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -58,5 +60,16 @@ public class BasicContentService implements ContentService {
 //    public int getRecommendCount(int contentId) {
 //        return contentRepository.getRecommendCount(contentId); // DB에서 추천 수 조회
 //    }
+	
+    @Override
+    public List<Content> getPagedContents(@Param("offset") int page, @Param("offset") int size) {
+        int offset = (page - 1) * size; // 시작 위치 계산
+        return contentRepository.getPagedContents(offset, size);
+    }
+
+    @Override
+    public int getTotalContentCount() {
+        return contentRepository.getTotalContentCount();
+    }
 
 }
