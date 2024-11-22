@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/thymeleaf/default_layout}">
+
+<div layout:fragment="content">
+	<h1>Profile Page</h1>
+		
+	<table border="1" th:object="${profile}" class="table">
+    <!-- th:object="${profile}"  -->
+    
+        <!-- 프로필 배경 이미지 -->
+        <!-- <tr>
+        	<td >
+        		<input type="file" accept="image/*" name="upload_profileimage">
+        	</td>
+        </tr> -->
+        
+        <!-- 프로필 이미지 -->
+        <!-- <tr>
+        	<td>
+        		<input type="file" accept="image/*" name="upload_backgroundimage">
+        	</td>
+        </tr> -->
+        
+
+    	<!-- 프로필 상세 정보 -->
+    	<tr>
+        	<th>ID</th>
+			<td th:utext="*{userId}"></td>
+        </tr>
+        <tr>
+        	<th>이름</th>
+			<td th:utext="*{userName}"></td>
+        </tr>
+        <tr>
+        	<th>e-mail</th>
+			<td th:utext="*{email}"></td>
+        </tr>
+        <tr>
+        	<th>소속</th>
+			<td th:utext="*{courseId}"></td>
+        </tr>
+        <tr>
+        	<th>자기소개</th> 
+			<td th:utext="*{biography}"></td>
+        </tr>
+    </table>
+           
+ 	<a th:href="@{update(userId=${profile.userId})}" class="btn btn-primary">수정하기</a>
+ 	
+</div>
+
+</html>
