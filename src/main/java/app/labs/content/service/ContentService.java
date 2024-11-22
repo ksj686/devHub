@@ -2,6 +2,8 @@ package app.labs.content.service;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import app.labs.content.model.Content;
 public interface ContentService {
 	
@@ -12,4 +14,9 @@ public interface ContentService {
 	List<Content>getAllContents(); //모든 글 조회
 //	void increaseRecommend(int contentId); //추천수 증가
 //	int getRecommendCount(int contentId); //추천수 조회
+	
+    List<Content> getPagedContents(@Param("offset") int page, @Param("offset") int size);
+    int getTotalContentCount();
+    
+    
 }	

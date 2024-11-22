@@ -12,8 +12,9 @@
 	    <label for="title">Title:</label>
 	    <input type="text" id="title" name="title" th:value="${content.title}" required />
 	    
-	    <label for="userId">User ID:</label>
-	    <input type="text" id="userId" name="userId" th:value="${content.userId}" required />
+<!-- 	    <label for="userId">User ID:</label> -->
+<!-- 	    <input type="text" id="userId" name="userId" th:value="${content.userId}" required /> -->
+	    <input type="hidden" name="userId" th:value="${session.userid}" /> <!-- 세션의 userId 사용 -->
 	
 	    <label for="text">Content:</label>
 	    <textarea id="text" name="text" th:value="${content.text}" required></textarea>

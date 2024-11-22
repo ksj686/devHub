@@ -30,5 +30,21 @@
 		</tbody>
 	</table>
 	
+    <div>
+        <ul class="pagination">
+            <li th:if="${currentPage > 1}">
+                <a th:href="@{/contents(page=${currentPage - 1})}">&laquo; Previous &nbsp&nbsp</a>
+            </li>
+            <li th:each="pageNum : ${#numbers.sequence(1, totalPages)}">
+                <a th:href="@{/contents(page=${pageNum})}" 
+                   th:classappend="${pageNum == currentPage} ? 'active' : ''"
+                   th:text="${pageNum}"></a>
+            </li>
+            <li th:if="${currentPage < totalPages}">
+                <a th:href="@{/contents(page=${currentPage + 1})}">&nbsp&nbsp Next &raquo;</a>
+            </li>
+        </ul>
+    </div>
+	
 </div>
 </html>
