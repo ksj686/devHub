@@ -19,12 +19,33 @@
     </p>
     <button id="recommend-button">Recommend</button> -->
     
+    <h2>Comments</h2>
+	<div id="comments-section">
+	    <ul>
+	        <li th:each="comment : ${comments}">
+	            <strong th:text="${comment.userId}">User ID</strong>:
+	            <span th:text="${comment.text}">Comment Text</span>
+	            <small th:text="${comment.dateCreated}">Date Created</small>
+	        </li>
+	    </ul>
+	</div>
+	    
+    <h3>Add a Comment</h3>
+	<form id="commentForm" th:attr="data-id=${content.contentId}">
+    	<textarea name="text" rows="5" cols="50" required></textarea>
+    	<button type="submit">Add Comment</button>
+	</form>
+    
     <button onclick="location.href='/contents'">목록</button>
 
 	<button th:onclick="'location.href=\'/contents/edit/' + ${content.contentId} + '\''">수정</button>
 	<button class="delete-button" th:data-id="${content.contentId}" th:data-user-id="${content.userId}">삭제</button>
 
 </div>
+
+
+
+
 	<th:block layout:fragment="script">
 	<script>
    
@@ -62,6 +83,56 @@
 	    });
 	});
 
+	
+	
+
+	document.querySelector('#commentForm').addEventListener('submit', function (e) {
+	    e.preventDefault();
+
+	    // 현재 폼에서 data-id 속성 가져오기
+	    const contentId = this.getAttribute('data-id');
+	    if (!contentId) {
+	        alert('Content ID not found!');
+	        return;
+	    }
+
+	    const text = this.querySelector('textarea[name="text"]').value;
+
+	    fetch(`/contents/${contentId}/comments`, {
+	        method: 'POST',
+	        headers: { 'Content-Type': 'application/json' },
+	        body: JSON.stringify({ text })
+	    }).then(response => {
+	        if (response.ok) {
+	            loadComments(contentId); // 댓글 목록 갱신
+	        } else {
+	            alert('Failed to add comment');
+	        }
+	    }).catch(error => {
+	        console.error('Error:', error);
+	        alert('An error occurred while adding the comment.');
+	    });
+	});
+
+    function loadComments(contentId) {
+        fetch(`/contents/${contentId}/comments`)
+            .then(response => response.json())
+            .then(comments => {
+                const commentsSection = document.getElementById('comments-section');
+                const commentsList = commentsSection.querySelector('ul');
+                commentsList.innerHTML = ''; // 기존 댓글 초기화
+
+                comments.forEach(comment => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `
+                        <strong>${comment.userId}</strong>: ${comment.text}
+                        <small>${new Date(comment.dateCreated).toLocaleString()}</small>
+                    `;
+                    commentsList.appendChild(li);
+                });
+            });
+    }
+
 
 
 
@@ -95,7 +166,8 @@
             console.error("Error occurred:", error);
             alert('Error occurred while processing recommendation.');
         });
-    }); */
+    }); 
+*/
 
     </script>
 	</th:block>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="app.labs.content.dao.CommentRepository">
+    <select id="getCommentsByContentId" resultType="app.labs.content.model.Comment">
+        SELECT 
+        	COMMENT_ID AS commentId,
+            USER_ID AS userId,
+            CONTENT_ID AS contentId,
+            TEXT AS text,
+            DATE_CREATED AS dateCreated,
+            LAST_UPDATED AS lastUpdated
+        FROM POST_COMMENT
+        WHERE CONTENT_ID = #{contentId}
+        ORDER BY DATE_CREATED 
+    </select>
+
+    <insert id="addComment" parameterType="app.labs.content.model.Comment">
+        INSERT INTO POST_COMMENT (CONTENT_ID, USER_ID, TEXT, DATE_CREATED, LAST_UPDATED)
+        VALUES (
+        	#{contentId}, 
+       		#{userId},
+       		#{text, jdbcType=CLOB},
+       		CURRENT_TIMESTAMP, 
+       		CURRENT_TIMESTAMP
+       	)
+    </insert>
+
+    <delete id="deleteComment" parameterType="int">
+        DELETE FROM POST_COMMENT WHERE COMMENT_ID = #{commentId}
+    </delete>
+</mapper>
+

@@ -57,6 +57,21 @@
         ORDER BY DATE_CREATED DESC
     </select>
     
+    <select id="getPagedContents" resultType="app.labs.content.model.Content">
+    SELECT * FROM (
+        SELECT CONTENT_ID AS contentId,
+               USER_ID AS userId,
+               TITLE AS title,
+               DATE_CREATED AS dateCreated,
+               TEXT AS text,
+               LAST_UPDATED AS lastUpdated,
+               FILE_ID AS fileId,
+               RECOMMEND AS recommendCnt,
+               ROW_NUMBER() OVER (ORDER BY DATE_CREATED DESC) AS rnum
+        FROM CONTENT
+    ) WHERE rnum BETWEEN #{offset} + 1 AND #{offset} + #{limit}
+	</select>
+    
     <update id = "increaseRecommend" parameterType="int">
     	UPDATE CONTENT
 		SET RECOMMEND = RECOMMEND + 1
