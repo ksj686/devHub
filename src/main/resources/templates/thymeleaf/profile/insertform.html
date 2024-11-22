@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/thymeleaf/default_layout}">
+
+<div layout:fragment="content">
+
+	<h1>프로필 정보 입력</h1>
+   	<form action="/profile/insert" method="post">
+    	<table border="1"> <!-- 프로필 페이지 -->
+    	
+    
+        <!-- 프로필 배경 이미지 -->
+        <!-- <tr>
+        	<td >
+        		<input type="file" accept="image/*" name="upload_profileimage">
+        	</td>
+        </tr> -->
+        
+        <!-- 프로필 이미지 -->
+        <!-- <tr>
+        	<td>
+        		<input type="file" accept="image/*" name="upload_backgroundimage">
+        	</td>
+        </tr> -->
+        
+
+    	<!-- 프로필 상세 정보 -->
+    	<!-- <option th:each="job:${jobList}" th:utext="${job.title}" th:value="${job.jobId}" 
+					    th:selected="${job.jobId==emp.jobId}"></option> -->
+    	<tr>
+        	<th>ID</th>
+			<td><input type="text" name="userId"></td>
+        </tr>
+        <tr>
+        	<th>이름</th>
+			<td><input type="text" name="userName"></td>
+        </tr>
+        <tr>
+        	<th>e-mail</th>
+			<td><input type="text" name="email"></td>
+        </tr>
+        <tr>
+        	<th>소속</th>
+        	<td><input type="text" name="courseId"></td>
+        </tr>
+        <tr>
+        	<th>자기소개</th>
+        	<td><input type="text" name="biography"></td>
+        </tr>
+		
+		<tr>
+			<th>&nbsp;</th>
+		<td>
+			<input type="submit" value="저장"> 
+			<input type="reset" value="취소">
+		</td>
+		</tr>
+        </table>
+	</form>
+   
+   
+</div>
+
+</html>

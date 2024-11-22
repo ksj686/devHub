@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="app.labs.profile.dao.ProfileRepository">
+
+	<select id="getProfileList" resultType="app.labs.profile.model.Profile">
+		SELECT * FROM USER_PROFILE
+	</select>
+
+    <!-- 프로필 정보를 가져오는 SELECT 문 -->
+    <select id="getProfileInfo" parameterType="string" resultType="app.labs.profile.model.Profile">
+        SELECT PROFILE_ID,
+        	   USER_ID,
+        	   USER_NAME,
+        	   EMAIL,
+        	   COURSE_ID,        	   
+        	   BIOGRAPHY
+        FROM USER_PROFILE WHERE USER_ID = #{userId}
+		<!-- PROFILE_IMAGE_ID,
+        	   PROFILE_IMAGE,
+        	   PROFILE_IMAGE_NAME,
+        	   PROFILE_IMAGE_SIZE,
+        	   BACKGROUND_IMAGE_ID,
+        	   BACKGROUND_IMAGE AS,
+        	   BACKGROUND_IMAGE_NAME,
+        	   BACKGROUND_IMAGE_SIZE, -->
+	</select>
+	
+	<!-- 프로필 이미지 리스트 -->
+	<select id="getProfileImageList" resultType="app.labs.profile.model.Profile">
+		SELECT PROFILE_IMAGE,
+			   PROFILE_IMAGE_ID,
+			   PROFILE_IMAGE_NAME, 
+			   PROFILE_IMAGE_SIZE
+		FROM USER_PROFILE WHERE USER_ID = #{userId}
+	</select>
+	
+	<!-- 프로필 배경 이미지 리스트 -->
+	<select id="getBackgroundImageList" resultType="app.labs.profile.model.Profile">
+		SELECT BACKGROUND_IMAGE,
+			   BACKGROUND_IMAGE_ID,
+			   BACKGROUND_IMAGE_NAME, 
+			   BACKGROUND_IMAGE_SIZE
+		FROM USER_PROFILE 
+		WHERE USER_ID = #{userId}
+	</select>
+	
+	<!-- 프로필 이미지 아이디 -->
+	<select id="getMaxProfileImageId" parameterType="int">
+		SELECT NVL(MAX(PROFILE_IMAGE_ID),0) FROM USER_PROFILE
+	</select>
+	
+	<!-- 프로필 배경 이미지 아이디 -->
+	<select id="getMaxBacgroundImageId" parameterType="int">
+		SELECT NVL(MAX(BACKGROUND_IMAGE_ID),0) FROM USER_PROFILE
+	</select>
+	
+    <!-- 자기소개만 수정하는 UPDATE 문 -->
+    <update id="updateProfile" parameterType="app.labs.profile.model.Profile">
+    	UPDATE USER_PROFILE
+    	SET BIOGRAPHY = #{biography, jdbcType=CLOB}       	
+    	WHERE USER_ID = #{userId}
+    	<!-- LAST_UPDATED = CASE WHEN #{lastUpdated} IS NOT NULL THEN TO_TIMESTAMP(#{lastUpdated}, 'YYYY-MM-DD HH24:MI:SS') ELSE NULL END -->
+	</update>
+	
+	<!-- 프로필 이미지 불러오기 -->
+	<select id="getProfileImage" parameterType="int">
+		SELECT PROFILE_IMAGE,
+			   PROFILE_IMAGE_ID,
+			   PROFILE_IMAGE_NAME, 
+			   PROFILE_IMAGE_SIZE
+		FROM USER_PROFILE 
+		WHERE PROFILE_IMAGE_ID = #{profileImageId}
+	</select>
+	
+	<!-- 프로필 배경 이미지 불러오기 -->
+	<select id="getBackgroundImage" parameterType="int">
+		SELECT BACKGROUND_IMAGE,
+			   BACKGROUND_IMAGE_ID,
+			   BACKGROUND_IMAGE_NAME, 
+			   BACKGROUND_IMAGE_SIZE
+		FROM USER_PROFILE 
+		WHERE BACKGROUND_IMAGE_ID = #{backgroundImageId}
+	</select>
+	
+	<!-- SELECT file_id, directory_name, file_name, file_size, "
+				+ "	file_content_type, file_data "
+				+ " FROM upload_file "
+				+ " WHERE file_id=? -->
+
+    <!-- 새로운 프로필 생성 -->
+    <insert id="insertProfile" parameterType="app.labs.profile.model.Profile">
+    <!-- COURSE_NAME,PROFILE_IMAGE, PROFILE_IMAGE_ID, PROFILE_IMAGE_NAME, PROFILE_IMAGE_SIZE,
+        	BACKGROUND_IMAGE, BACKGROUND_IMAGE_ID, BACKGROUND_IMAGE_NAME, BACKGROUND_IMAGE_SIZE,, LAST_UPDATED -->
+    <!-- , #{courseName}, 
+        	#{profileImage}, #{profileImageId}, #{profileImageName}, #{profileImageSize},
+        	#{backgroundImage}, #{backgroundImageId}, #{backgroundImageName}, #{backgroundImageSize}
+        	CASE WHEN #{lastUpdated} IS NOT NULL THEN TO_TIMESTAMP(#{lastUpdated}, 'YYYY-MM-DD HH24:MI:SS') ELSE NULL END -->
+   		INSERT INTO USER_PROFILE (
+        	USER_ID, USER_NAME, EMAIL, COURSE_ID, BIOGRAPHY
+    	) VALUES (
+        	#{userId}, #{userName}, #{email}, #{courseId}, #{biography, jdbcType=CLOB}
+           	)
+	</insert>
+	
+	<!-- 본인 프로필로 이동 -->
+	<!-- <select id="loginProfile" parameterType="app.labs.profile.model.Profile">
+		SELECT USER_ID
+		FROM USER_PROFIEL
+		WHERE USER_ID = #{userId}
+		  
+	</select> -->
+	
+	<!-- <select id="getAllCourseId" resultType="hashmap">
+		SELECT 
+			COURSE_ID, 
+			COURSE_NAME 
+		FROM COURSE
+	</select>
+	
+	<select id="getAllUserId" resultType="hashmap">
+    	 SELECT USER_ID,
+    	 		USER_NAME,
+    	 		EMAIL, 
+    	 		COURSE_ID
+         FROM MEMBER
+	</select>
+	
+	<select id="getUserInfo" parameterType="string" resultType="app.labs.profile.model.Profile">
+    	 SELECT USER_ID,
+    	 		USER_NAME,
+    	 		EMAIL, 
+    	 		COURSE_ID
+         FROM MEMBER
+         WHERE USER_ID = #{userId}
+	</select>
+	
+	<select id="getBiography" parameterType="string">
+    	 SELECT USER_ID,
+    	 		BIOGRAPHY
+         FROM USER_PROFILE
+         WHERE USER_ID = #{userId}
+	</select> -->
+	
+</mapper>
