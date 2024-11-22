@@ -15,13 +15,13 @@ $(document).ready(function() {
                 text: text
             },
             complete:function(){
+				console.log("전송완료");
             	alert("메시지가 전송되었습니다.");
-                window.close(); // 팝업 창 닫기
-                
                 // 부모 창에서 테이블 갱신 함수 호출
                 if (window.opener && window.opener.updateMessageTable) {
                     window.opener.updateMessageTable(); // 부모 창에서 테이블 갱신
                 }
+				window.close(); // 팝업 창 닫기
             }
             /* success: function(response) {
                 // 메시지 전송 성공 후 팝업창 닫기

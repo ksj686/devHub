@@ -15,6 +15,63 @@
         WHERE SENDER_ID = #{userId}
         ORDER BY DATE_CREATED DESC
     </select>
+    
+    <!-- 보낸 메시지 검색 -->
+    <select id="sentMsgSearch" parameterType="java.util.Map" resultType="app.labs.message.model.Msg">
+        SELECT MESSAGE_ID AS messageId,
+               SENDER_ID AS senderId,
+               RECEIVER_ID AS receiverId,
+               TEXT AS text,
+               DATE_CREATED AS dateCreated,
+               DATE_READ AS dateRead
+        FROM SENT_MESSAGE
+        WHERE SENDER_ID = #{userId}
+        <choose>
+        	<when test='searchFilter.equals("content")'>
+        	AND TEXT LIKE '%' || #{searchQuery} || '%'
+        	</when>
+        	<when test='searchFilter.equals("receiverId")'>
+        	AND RECEIVER_ID = #{searchQuery}
+        	</when>
+        	<when test='searchFilter.equals("senderId")'>
+        	AND SENDER_ID = #{searchQuery}
+        	</when>
+        </choose>
+        <!-- <if test='searchFilter.equals("content")'>
+			  AND TEXT LIKE CONCAT('%',#{searchQuery},'%')
+		</if>
+		<if test="searchFilter == 'receiverId'">
+			  AND RECEIVER_ID = #{searchQuery}
+		</if> -->
+        ORDER BY DATE_CREATED DESC
+    </select>
+    
+    <!-- 받은 메시지 검색 -->
+    <select id="receivedMsgSearch" parameterType="java.util.Map" resultType="app.labs.message.model.Msg">
+        SELECT MESSAGE_ID AS messageId,
+               SENDER_ID AS senderId,
+               RECEIVER_ID AS receiverId,
+               TEXT AS text,
+               DATE_CREATED AS dateCreated,
+               DATE_READ AS dateRead
+        FROM RECEIVED_MESSAGE
+        WHERE RECEIVER_ID = #{userId}
+        <choose>
+        	<when test='searchFilter.equals("content")'>
+        	AND TEXT LIKE '%' || #{searchQuery} || '%'
+        	</when>
+        	<when test='searchFilter.equals("senderId")'>
+        	AND SENDER_ID = #{searchQuery}
+        	</when>
+        </choose>
+        <!-- <if test='searchFilter.equals("content")'>
+			  AND TEXT LIKE CONCAT('%',#{searchQuery},'%')
+		</if>
+		<if test="searchFilter == 'receiverId'">
+			  AND RECEIVER_ID = #{searchQuery}
+		</if> -->
+        ORDER BY DATE_CREATED DESC
+    </select>
 
     <!-- 받은 메시지 목록 조회 -->
     <select id="getReceivedMessages" parameterType="String" resultType="app.labs.message.model.Msg">
@@ -28,7 +85,7 @@
         WHERE RECEIVER_ID = #{userId}
         ORDER BY DATE_CREATED DESC
     </select>
-
+    
     <!-- 보낸 메시지 상세 조회 -->
     <select id="getSentMsgDetail" parameterType="String" resultType="app.labs.message.model.Msg">
 			   
@@ -101,4 +158,12 @@
 		DELETE FROM RECEIVED_MESSAGE 
 		WHERE MESSAGE_ID = #{messageId}
 	</delete>
+	
+	<update id="updateExpiredMember">
+		UPDATE MEMBER
+			SET USER_STATUS = 'inactive'
+		WHERE LAST_LOGIN &lt; ADD_MONTHS(SYSDATE, -12)
+				AND 
+			USER_STATUS != 'inactive'
+	</update>
 </mapper>

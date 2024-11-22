@@ -1,7 +1,12 @@
 package app.labs.message.controller;
 
 
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -39,8 +44,53 @@ public class MsgController {
         return "thymeleaf/message/sent";
     }
     
+//  보낸 메시지 검색
+    @GetMapping("/message/sent/search")
+    public String sentMsgSearch(@RequestParam("filter") String filter,
+    								@RequestParam("query") String query,
+    				Model model, HttpSession session) {
+    	log.info("messageSearch 메서드 : "+ filter);
+    	String userId = (String) session.getAttribute("userid");
+	    String searchFilter = URLDecoder.decode(filter, StandardCharsets.UTF_8);
+	    String searchQuery = URLDecoder.decode(query, StandardCharsets.UTF_8);
+	    log.info("userId : "+userId + " searchFilter : " + searchFilter + " searchQuery : " + searchQuery);
+	    Map<String, Object> params = new HashMap<>();
+	    params.put("userId", userId);
+	    params.put("searchFilter", searchFilter);
+	    params.put("searchQuery", searchQuery);
+
+//    	List<Msg> sentMessages = msgService.sentMsgSearch(userId, searchFilter, searchQuery);
+    	List<Msg> sentMessages = msgService.sentMsgSearch(params);
+    	model.addAttribute("sentMessages", sentMessages);
+
+    	return "thymeleaf/message/sent";  // 받은 메시지 상세 페이지
+	}
+    
+//  받은 메시지 검색
+    @GetMapping("/message/received/search")
+    public String receivedMsgSearch(@RequestParam("filter") String filter,
+    								@RequestParam("query") String query,
+    				Model model, HttpSession session) {
+    	log.info("messageSearch 메서드 : "+ filter);
+    	String userId = (String) session.getAttribute("userid");
+	    String searchFilter = URLDecoder.decode(filter, StandardCharsets.UTF_8);
+	    String searchQuery = URLDecoder.decode(query, StandardCharsets.UTF_8);
+	    log.info("userId : "+userId + " searchFilter : " + searchFilter + " searchQuery : " + searchQuery);
+	    Map<String, Object> params = new HashMap<>();
+	    params.put("userId", userId);
+	    params.put("searchFilter", searchFilter);
+	    params.put("searchQuery", searchQuery);
+
+//    	List<Msg> sentMessages = msgService.sentMsgSearch(userId, searchFilter, searchQuery);
+    	List<Msg> receivedMessages = msgService.receivedMsgSearch(params);
+    	model.addAttribute("receivedMessages", receivedMessages);
+
+    	return "thymeleaf/message/received";  // 받은 메시지 상세 페이지
+	}
+
+    
     @PostMapping("/message/insert")
-    public void insertMsg(Msg msg, @RequestParam(name = "receiverId") String receiverId, @RequestParam(name = "text") String text, HttpSession session, RedirectAttributes redirectAttributes) {
+    public String insertMsg(Msg msg,/* @RequestParam(value = "receiverId") String receiverId, @RequestParam(value = "text") String text, */ HttpSession session, RedirectAttributes redirectAttributes) {
     	log.info("insertMsg 메소드 실행");
     	String userId = (String) session.getAttribute("userid");
     	
@@ -50,8 +100,9 @@ public class MsgController {
     	int randomValue = (int) (Math.random() * 1000);  // 0~999 사이의 랜덤 값
     	String uniqueKey = currentTimeMillis + "-" + randomValue;
     	msg.setMessageId(uniqueKey);
-    	msg.setReceiverId(receiverId);
-    	msg.setText(text);
+//    	log.info("receiver id ? : " + msg.getReceiverId());
+//    	msg.setReceiverId(receiverId);
+//    	msg.setText(text);
     	msg.setSenderId(userId);
 		try {
 			int num = msgService.insertMsg(msg);
@@ -60,10 +111,12 @@ public class MsgController {
 					"메시지를 보냈습니다.");
 		}
 		catch(RuntimeException e) {
+			e.printStackTrace();
 			redirectAttributes.addFlashAttribute("message", e.getMessage());
 		}
 		
-//		return "redirect:/hr/list";
+		return "redirect:/message/sent";
+//		return "저장완료";
 	}
 
     // 받은 메시지 조회
@@ -131,6 +184,7 @@ public class MsgController {
     	log.info(cnt+"건의 받은 메시지 삭제");
     	return "redirect:/message/received";
 	}
+    
     
     // 추후 삭제예정
 //    @GetMapping("/message/{userId}")

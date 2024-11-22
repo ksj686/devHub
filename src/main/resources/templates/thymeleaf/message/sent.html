@@ -2,9 +2,10 @@
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{/thymeleaf/default_layout}">
-	
+
 <th:block layout:fragment="css">
     <link rel="stylesheet" th:href="@{/css/message/sent.css}" />
+    
 </th:block>
 
 
@@ -15,12 +16,14 @@
         <a href="/message/sent" class="message-link">보낸 메시지</a>
     </div>
 
-    <h1 class="page-title">보낸 메시지 목록</h1>
+    <h1 class="page-title">보낸 메시지</h1>
 
     <!-- 삭제 버튼 (전체 선택 시) -->
     <div class="button-container">
-        <button id="deleteSelected" class="delete-btn">선택한 메시지 삭제</button>
-        <button id="composeMessage" class="compose-btn" onclick="openComposeMessageWindow()">메시지 작성</button> <!-- 메시지 작성 버튼 추가 -->
+        <span id="deleteSelected" class="delete-btn"><i class="bi bi-envelope-x"></i>선택한 메시지 삭제</span>
+        <!-- <button id="composeMessage" class="compose-btn" onclick="openComposeMessageWindow()">메시지 작성</button> --> <!-- 메시지 작성 버튼 추가 -->
+        <span id="composeMessage" class="compose-btn" onclick="openComposeMessageWindow()"><i class="bi bi-envelope-plus"></i>메시지 작성</span>
+        
     </div>
 
     <!-- 메시지 목록 테이블 -->
@@ -58,8 +61,8 @@
             <option value="content">내용</option>
             <option value="receiverId">받는 사람 ID</option>
         </select>
-        <input type="text" id="searchText" class="search-input" placeholder="검색어를 입력하세요"/>
-        <button id="searchButton" class="search-button">검색</button>
+        <input name="searchText" type="text" id="searchText" class="search-input" placeholder="검색어를 입력하세요"/>
+        <div id="searchButton" class="search-button">검색</div>
     </div>
 </div>
 <th:block layout:fragment="script">

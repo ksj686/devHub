@@ -1,153 +1,163 @@
 @charset "UTF-8";
-/* 기본 설정 */
-/* * {
+
+/* 페이지 전체 스타일 */
+body {
+    font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
-} */
-
-h1.page-title {
-    text-align: center;
-    font-size: 2em;
-    color: #34495e;
-    margin-bottom: 30px;
+    /* background-color: #f9f9f9; */
 }
 
-/* 테이블 스타일 */
-table.message-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-    background-color: #fff;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-top: 1px solid #ddd; 
-    border-bottom: 1px solid #ddd; 
+.content{
+	padding-top: 20px
 }
 
-th.table-header, td.table-cell {
-    padding: 12px;
+/* 메시지 링크 */
+.message-links {
+    padding: 10px;
+    font-size: 14px;
     text-align: left;
-    border: 1px solid #ddd;
-    font-size: 1.1em;
+    background-color: #f1f1f1;
+    border-bottom: 1px solid #ddd;
 }
 
-th.table-header {
-    background-color: #3498db;
-    color: white;
-}
-
-td.table-cell {
-    font-size: 1em;
-}
-
-/* 링크 스타일 */
-a.message-link {
+.message-link {
+    color: #007bff;
     text-decoration: none;
-    color: #3498db;
-    font-weight: bold;
 }
 
-a.message-link:hover {
-    color: #2980b9;
+.message-link:hover {
     text-decoration: underline;
 }
 
-/* 홀수/짝수 행 배경색 */
-tr:nth-child(even).message-row {
-    background-color: #f2f2f2;
+/* 페이지 제목 */
+.page-title {
+    font-size: 24px;
+    margin: 20px 0 10px;
+    padding: 0 20px;
+    color: #333;
 }
 
-tr:nth-child(odd).message-row {
-    background-color: #ffffff;
-}
-
-/* 체크박스 셀 정렬 */
-.message-table td input[type="checkbox"] {
-    margin: 0; /* 여백을 없애서 자연스러운 배치를 위해 */
-    vertical-align: middle; /* 체크박스 세로 중앙 정렬 */
-}
-
-/* 전체 선택 체크박스 */
-#selectAll {
-    width: 20px;
-    height: 20px;
-    vertical-align: middle; /* 수평 중앙 정렬 */
-}
-
-/* 개별 메시지 체크박스 */
-.message-checkbox {
-    width: 20px;
-    height: 20px;
-    vertical-align: middle; /* 수평 중앙 정렬 */
-}
-
-/* 행 사이에 얇은 회색 줄 추가 */
-.message-row {
-    border-top: 1px solid #ddd; /* 행 사이에 얇은 회색 줄 추가 */
-}
-
-/* 버튼 스타일 */
-.delete-btn {
+/* 버튼 컨테이너 */
+.button-container {
     padding: 10px 20px;
-    background-color: #ff5c5c;
-    color: white;
+    display: flex;
+    gap: 10px;
+}
+
+.delete-btn,
+.compose-btn {
+    padding: 10px 15px;
+    font-size: 18px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    margin-top: 20px;
-}
-
-.delete-btn:hover {
-    background-color: #ff3e3e;
 }
 
 .compose-btn {
-    padding: 10px 20px;
-    background-color: #3498db;
-    color: white;
-    border: none;
-    border-radius: 5px;
+	margin-left: auto;
+	padding-right: 40px;
+}
+
+.bi-envelope-x{
+	color:red;
+}
+
+.bi-envelope-plus{
+	color: blue;
+}
+
+.compose-btn:hover,.delete-btn:hover {
+	text-decoration: underline;
+	font-weight: bold;
+	transform: scale(1.1);
+}
+
+
+/* 메시지 테이블 */
+.message-table {
+    width: 96%;
+    border-collapse: collapse;
+    margin: 0 20px 20px;
+    background-color: #fff;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.message-table thead {
+    background-color: #f1f1f1;
+}
+
+.table-header {
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.table-cell {
+    font-size: 14px;
+    text-align: center;
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.message-row:hover {
+    background-color: #f9f9f9;
+}
+
+/* 체크박스 */
+.select-all,
+.message-checkbox {
     cursor: pointer;
-    margin-top: 20px;
 }
 
-.compose-btn:hover {
-    background-color: #2980b9;
-}
-
-/* 검색 기능 스타일 */
+/* 검색 바 */
 .search-bar {
-    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center; /* 내부 요소 가운데 정렬 */
+    width: 300px; /* 좌우 크기 300px */
+    height: 30px; /* 높이 30px */
+    margin: 10px auto; /* 상하 여백 10px, 좌우 자동 정렬 */
+    padding: 0 10px; /* 양옆 패딩 */
+    gap: 10px; /* 내부 요소 간 간격 */
+    border-radius: 5px; /* 모서리 둥글게 */
 }
 
-.search-select, .search-input {
-    padding: 8px;
-    font-size: 16px;
+.search-select {
+    padding: 5px 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.search-input {
+    flex: 1;
+    padding: 5px 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
 }
 
 .search-button {
-    padding: 8px 16px;
-    background-color: #3b99fc;
-    color: white;
-    border: none;
+    padding: 7px 15px;
+    font-size: 14px;
+    color: blue;
+    border: 1px solid blue;
+    border-radius: 5px;
     cursor: pointer;
+    white-space: nowrap;
+    background-color: white;
 }
 
 .search-button:hover {
-    background-color: #3399eb;
+    background-color: #e4ecf3;
+    text-decoration: underline;
+	font-weight: bold;
+	transform: scale(1.1);
 }
 
-/* 모바일 대응 */
-@media (max-width: 768px) {
-    table.message-table {
-        font-size: 0.9em;
-    }
-
-    th.table-header, td.table-cell {
-        padding: 8px;
-    }
-
-    h1.page-title {
-        font-size: 1.5em;
-    }
+th {
+	cursor: pointer;
 }

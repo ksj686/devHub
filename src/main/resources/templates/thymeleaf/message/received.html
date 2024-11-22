@@ -4,7 +4,7 @@
 	layout:decorate="~{/thymeleaf/default_layout}">
 	
 <th:block layout:fragment="css">
-    <link rel="stylesheet" href="/css/message/received.css" />
+    <link rel="stylesheet" th:href="@{/css/message/received.css}" />
 </th:block>
 
 <div layout:fragment="content">
@@ -14,10 +14,12 @@
         <a href="/message/sent" class="message-link">보낸 메시지</a>
     </div>
     
-    <h1 class="page-title">받은 메시지 목록</h1>
+    <h1 class="page-title">받은 메시지</h1>
 
     <!-- 삭제 버튼 (전체 선택 시) -->
-    <button id="deleteSelected" class="delete-btn">선택한 메시지 삭제</button>
+    <div class="button-container">
+        <span id="deleteSelected" class="delete-btn"><i class="bi bi-envelope-x"></i>선택한 메시지 삭제</span>
+    </div>
 
     <!-- 메시지 목록 테이블 -->
     <table class="message-table">
@@ -30,7 +32,7 @@
                 <th class="table-header">수신 확인</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody id="messageTableBody">
             <tr th:each="message : ${receivedMessages}" class="message-row">
                 <td><input type="checkbox" name="messageIds" th:value="${message.messageId}" class="message-checkbox"/></td>
                 <td th:text="${message.senderId}" class="table-cell"></td>
@@ -54,8 +56,8 @@
             <option value="content">내용</option>
             <option value="senderId">보낸 사람 ID</option>
         </select>
-        <input type="text" id="searchText" class="search-input" placeholder="검색어를 입력하세요"/>
-        <button id="searchButton" class="search-button">검색</button>
+        <input type="text" id="searchText" name="searchText" class="search-input" placeholder="검색어를 입력하세요"/>
+        <div id="searchButton" class="search-button">검색</div>
     </div>
 </div>
 <th:block layout:fragment="script">
