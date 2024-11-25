@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="app.labs.journal.dao.JournalRepository">
+
+	<insert id="createJournal" parameterType="app.labs.journal.model.Journal">
+		INSERT INTO PERSONAL_JOURNAL (
+			USER_ID, TITLE, FILE_PATH
+		)
+		VALUES (
+			#{userId}, #{title}, #{filePath}
+		)
+	</insert>
+	
+	
+	<!-- 기록 상세 조회 -->
+    <select id="getAllJournal" parameterType="String" resultType="app.labs.journal.model.Journal">
+        <!-- SELECT JOURNAL_ID, TITLE, DATE_CREATED
+        FROM PERSONAL_JOURNAL
+        WHERE USER_ID = #{userId}
+        ORDER BY DATE_CREATED DESC -->
+        SELECT
+		    pj.JOURNAL_ID,
+		    pj.TITLE,
+		    pj.DATE_CREATED,
+		    pj.FILE_PATH
+		FROM
+		    PERSONAL_JOURNAL pj    
+		JOIN (
+		    SELECT 
+		        REGEXP_SUBSTR(FILE_PATH, '[^_]+', 1, 1) AS BASE_NAME,
+		        MAX(FILE_PATH) AS LATEST_FILE_PATH
+		    FROM 
+		        PERSONAL_JOURNAL
+		    GROUP BY 
+		        REGEXP_SUBSTR(FILE_PATH, '[^_]+', 1, 1)
+		) lf
+		ON pj.FILE_PATH = lf.LATEST_FILE_PATH
+        WHERE USER_ID = #{userId}
+        ORDER BY DATE_CREATED DESC
+    </select>
+	
+	<!-- 기록 상세 조회 -->
+    <select id="getJournal" parameterType="int" resultType="app.labs.journal.model.Journal">
+        SELECT *
+        FROM PERSONAL_JOURNAL
+	    WHERE JOURNAL_ID = #{journalId}
+    </select>
+	
+</mapper>

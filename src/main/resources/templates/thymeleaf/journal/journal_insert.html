@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{/thymeleaf/default_layout_main}">
+
+<th:block layout:fragment="css">
+    <style>
+    	#titleEditor {
+            /* border: 1px solid #ccc; */
+            padding: 10px;
+            min-height: 50px; /* 높이 증가 */
+            font-size: 24px;  /* 글꼴 크기 증가 */
+            width: 100%;
+            white-space: pre-wrap;
+            overflow-y: auto;
+            margin-bottom: 10px;
+        }
+        #titleEditor:focus { 
+	        outline: none; 
+	        border: none;
+        }
+        #editor {
+            border: 1px solid #ccc;
+            padding: 10px;
+            min-height: 300px;
+            width: 100%;
+            white-space: pre-wrap;
+            overflow-y: auto;
+        }
+        #editor img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin-top: 10px;
+        }
+        #uploadBtn {
+            margin-top: 10px;
+        }
+        .placeholder {
+            color: #999;
+        }
+        /* 경고 대화상자 스타일 */
+		.dialog {
+		    position: fixed;
+		    top: 50%;
+		    left: 50%;
+		    transform: translate(-50%, -50%);
+		    width: 300px;
+		    padding: 20px;
+		    background-color: #f8d7da;
+		    border: 1px solid #f5c6cb;
+		    border-radius: 8px;
+		    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+		    z-index: 1000;
+		}
+		
+		.save-dialog{
+			background-color: #3AA0E4;
+			color: #ffffff;
+		}
+		
+		.dialog-content {
+		    position: relative;
+		    text-align: center;
+		}
+		
+		.close-btn {
+		    position: absolute;
+		    top: 10px;
+		    right: 10px;
+		    font-size: 20px;
+		    cursor: pointer;
+		}
+    </style>
+</th:block>
+<!-- jQuery -->
+<!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
+
+<div layout:fragment="content">
+<!-- <h1>글과 이미지를 섞어서 입력</h1> -->
+
+<!-- Form Data (form 태그로 데이터를 제출) -->
+<!-- <form id="journalForm" action="/submit_journal" method="POST" enctype="multipart/form-data"> -->
+
+    <!-- 제목 필드 -->
+    <!-- <input type="text" name="title" placeholder="제목을 입력하세요" required /> -->
+    
+    <!-- 제목 필드 -->
+    <!-- <div contenteditable="true"  id="titleEditor"></div> -->
+    <input type="text" id="titleEditor" placeholder="제목을 입력하세요"/>
+    <!-- 글과 이미지를 입력할 공간 -->
+    <div contenteditable="true" id="editor"></div>
+
+    <!-- 숨겨진 textarea 필드 (서버로 전송될 값) -->
+    <textarea name="text" id="text" style="display:none;"></textarea>
+    
+    <!-- 숨겨진 unique ID 필드 -->
+    <input type="hidden" name="uniqueId" id="uniqueId" />
+
+    <!-- 파일 업로드 버튼 -->
+    <input type="file" id="imageInput" name="image" accept="image/*" style="display: none;" />
+    <button type="button" id="uploadBtn">이미지 업로드</button>
+
+    <!-- 제출 버튼 -->
+    <button type="submit" id="submitBtn">제출</button>
+    
+    <div id="warningDialog" class="dialog" style="display:none;">
+		<div class="dialog-content">
+	<!-- 		<span class="close-btn" onclick="closeWarning()">&times;</span> -->
+			<p>제목을 입력하세요!</p>
+		</div>
+	</div>
+    
+    <div id="savingDialog" class="dialog save-dialog" style="display:none;">
+		<div class="dialog-content">
+	<!-- 		<span class="close-btn" onclick="closeWarning()">&times;</span> -->
+			<p>저장되었습니다.</p>
+		</div>
+	</div>
+</div>
+
+<!-- <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script> -->
+<th:block layout:fragment="script">
+	<script>
+	// 타임스탬프 생성 함수
+    function generateTimestamp() {
+        return Date.now().toString();
+    }
+
+	// 자동 저장, callback 있으면 일반 저장
+    function autoSave(callback) {
+        let editorContent = $("#editor").html();  // contentEditor에서 입력된 HTML 내용 가져오기
+        //let title = $("input[name='title']").val(); // titleEditor에서 입력된 HTML 내용 가져오기
+        let title = $("#titleEditor").val(); // titleEditor에서 입력된 HTML 내용 가져오기
+        //let title = $("#titleEditor").text(); // titleEditor에서 입력된 HTML 내용 가져오기
+        if(title!=""){
+	        let uniqueId = $("#uniqueId").val(); // 유니크 ID 가져오기
+	
+	        // AJAX를 통해 서버로 데이터 전송
+	        $.ajax({
+	            url: '/submit_journal',
+	            method: 'POST',
+	            data: {
+	                title: title,
+	                content: editorContent,
+	                uniqueId: uniqueId
+	            },
+	            success: function(response) {
+	                if (response.status === "OK") {
+	                    console.log("자동 저장 성공");
+	                } else {
+	                    console.error("자동 저장 실패:", response);
+	                }
+	                if (callback) callback();  // AJAX 요청이 성공하면 콜백 함수 호출
+	                else showSaving();
+	            },
+	            error: function(xhr, status, error) {
+	                console.error("자동 저장 실패:", error);
+	                //if (callback) callback();  // AJAX 요청이 실패하더라도 콜백 함수 호출
+	            }
+	        });
+        } else {
+        	showWarning();
+        }
+    }
+
+    // 타이머 초기화 변수
+    let typingTimer;
+    const doneTypingInterval = 2000; // 2초 후에 자동 저장
+
+    // 타임스탬프 생성 후 숨겨진 필드에 설정
+    $(document).ready(function() {
+        const uniqueId = generateTimestamp();
+        $("#uniqueId").val(uniqueId);
+        
+        /* // titleEditor에 플레이스홀더처럼 표시될 텍스트 추가
+        $("#titleEditor").addClass('placeholder');
+        $("#titleEditor").text('제목을 입력하세요');
+
+     	// titleEditor에 포커스 시 플레이스홀더 텍스트 제거
+        $('#titleEditor').on('focus', function() {
+            if ($(this).hasClass('placeholder') && $(this).text() === '제목을 입력하세요') {
+                $(this).removeClass('placeholder');
+                $(this).text('');
+            }
+        });
+
+        // titleEditor에서 포커스 아웃 시 플레이스홀더 텍스트 복원
+        $('#titleEditor').on('blur', function() {
+            if ($(this).text().trim() === '') {
+                $(this).addClass('placeholder');
+                $(this).text('제목을 입력하세요');
+            }
+        }); */
+     // jQuery 사용
+    });
+	
+    
+ 	// 키보드 입력 이벤트 감지
+    $('#editor').on('input', function() {
+        clearTimeout(typingTimer);
+        typingTimer = setTimeout(autoSave, doneTypingInterval);
+    });
+	
+    // 파일 업로드 버튼 클릭 시 파일 선택 창을 열기
+    $("#uploadBtn").on('click',function() {
+        $("#imageInput").click();
+    });
+
+    // 이미지 선택 후 커서 위치에 이미지 삽입
+    $("#imageInput").on('change',function(event) {
+        let file = event.target.files[0];
+        if (file) {
+            let reader = new FileReader();
+            reader.onload = function(e) {
+                let base64Image = e.target.result;
+                insertImageAtCursor(base64Image);
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+    // 커서 위치에 이미지를 삽입하는 함수
+    function insertImageAtCursor(base64Image) {
+        let editor = $("#editor")[0];  // contenteditable 영역
+        let imgTag = `<img src="${base64Image}" alt="image" />`;
+        
+        // 커서 위치에 이미지 삽입
+        let selection = window.getSelection();
+        
+		// 커서가 editor 내에 있는지 확인 
+        if (selection.rangeCount > 0) { 
+        	let range = selection.getRangeAt(0); 
+        	if (editor.contains(range.commonAncestorContainer)) { 
+        		range.deleteContents(); range.insertNode(document.createRange().createContextualFragment(imgTag)); 
+        	} else { 
+        		// 커서가 editor 밖에 있는 경우 editor의 맨 아래에 이미지 삽입 
+        		editor.innerHTML += imgTag; 
+        	} 
+        } else { 
+        	// 커서가 editor 밖에 있는 경우 editor의 맨 아래에 이미지 삽입 
+        	editor.innerHTML += imgTag; 
+        }
+        
+        //let range = selection.getRangeAt(0);
+        //range.deleteContents();
+        //range.insertNode(document.createRange().createContextualFragment(imgTag));
+    }
+	
+	// 경고 대화상자 닫기 함수
+	function closeWarning() {
+	    $("#warningDialog").fadeOut();
+	}
+	
+	// 경고 대화상자 표시 함수
+	function showWarning() {
+	    $("#warningDialog").appendTo("body").fadeIn();
+	    
+	    // 1.5초 후에 자동으로 닫기
+	    setTimeout(closeWarning, 1500);
+	}
+	
+	// 경고 대화상자 닫기 함수
+	function closeSaving() {
+	    $("#savingDialog").fadeOut();
+	}
+	
+	// 경고 대화상자 표시 함수
+	function showSaving() {
+	    $("#savingDialog").appendTo("body").fadeIn();
+	    
+	    // 1.5초 후에 자동으로 닫기
+	    setTimeout(closeSaving, 1500);
+	}
+	
+    // 폼 제출 전에 contenteditable 영역의 내용을 textarea로 전달하고 실제로 폼을 제출
+    $('#submitBtn').on('click', function() {
+        autoSave(function() {
+            window.location.href = "/journals";
+        });
+    });
+	</script>
+</th:block>
+</html>
