@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{/thymeleaf/default_layout}">
+
+
+<div layout:fragment="content">
+    <h1 class="page-title">기록 목록</h1>
+  
+    <div class="notice-links">
+    	<a href="/notice_insert" class = "contents-link">새로운 글 작성</a> 
+	</div>
+	
+	<table class = "notices-table">
+		<thead>
+			<tr>
+				<th class="table-header">제목</th>
+				<th class="table-header">작성자</th>
+				<th class="table-header">작성일자</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="notice : ${notices}" class="notices-row">
+				<td class="table-cell">
+					<a th:href="@{/notice/{noticeId}(noticeId=${notice.noticeId})}" 
+					th:utext="${notice.title}"></a>
+				</td>
+				<td th:text="${notice.userId}" class="table-cell"></td>
+				<td th:text="${notice.dateCreated}" class="table-cell"></td>
+			</tr>
+		</tbody>
+	</table>
+	
+   <!--  <div>
+        <ul class="pagination">
+            <li th:if="${currentPage > 1}">
+                <a th:href="@{/contents(page=${currentPage - 1})}">&laquo; Previous &nbsp&nbsp</a>
+            </li>
+            <li th:each="pageNum : ${#numbers.sequence(1, totalPages)}">
+                <a th:href="@{/contents(page=${pageNum})}" 
+                   th:classappend="${pageNum == currentPage} ? 'active' : ''"
+                   th:text="${pageNum}"></a>
+            </li>
+            <li th:if="${currentPage < totalPages}">
+                <a th:href="@{/contents(page=${currentPage + 1})}">&nbsp&nbsp Next &raquo;</a>
+            </li>
+        </ul>
+    </div> -->
+	
+</div>
+</html>

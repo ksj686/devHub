@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{/thymeleaf/default_layout}">
+
+<th:block layout:fragment="css">
+</th:block>
+<!-- jQuery -->
+<!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
+
+<div layout:fragment="content">
+    <div>
+        <!-- 게시글 제목 -->
+        <!-- <h2 th:text="'제목 &nbsp;&nbsp;&nbsp;: ' + ${boardNotice.title}"></h2> -->
+        <h2><span class="tab">&nbsp;&nbsp;&nbsp;제목 </span> <span th:text="${boardNotice.title}"></span></h2>
+        <h2><span class="tab">작성자 </span> <span th:text="${boardNotice.userId}"></span></h2>
+        <!-- <h2 th:text="'작성자 : ' + ${boardNotice.userId}"></h2> -->
+        
+        
+        <!-- 게시글 내용 (텍스트) -->
+        <div th:utext="${boardNotice.text}"></div>
+		<h2 th:text="'작성일자 : ' + ${boardNotice.dateCreated}"></h2>
+        <!-- 저장된 이미지 파일들을 base64로 표시 -->
+        <!-- <div th:each="file : ${boardNotice.files}">
+            <h3>Attached Image: <span th:text="${file.fileName}"></span></h3>
+            <img th:src="'data:image/jpeg;base64,' + ${#strings.encodeBase64(file.fileData)}" alt="File image"/>
+        </div> -->
+    </div>
+</div>
+    <!-- <a href="/board-notices">Back to Board Notices</a> -->
+	<!-- <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script> -->    
+    <th:block layout:fragment="script"></th:block>
+</html>
