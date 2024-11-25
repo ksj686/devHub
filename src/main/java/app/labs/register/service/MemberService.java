@@ -19,6 +19,12 @@ public interface MemberService {
 	Member loginMember(Member member);
 	Member findByUserId(String userId);
 	//void deleteMember(Long idx);
+    String findUserIdByEmailOrPhone(String emailOrPhone);
+    String findPasswordByEmailOrPhone(String emailOrPhone);
+    boolean existsByUserId(String userId);
+	boolean isUserIdDuplicated(String userId);
+
 	
+
 	
 }

@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
 import app.labs.register.model.Member;
 
@@ -22,7 +23,13 @@ public interface MemberRepository {
 	List<Map<String, Object>> getAllEmails();
 	List<Map<String, Object>> getAllPhoneNumbers();
 	Member loginMember(Member member);
+    
+    Member findByEmailOrPhone(@Param("emailOrPhone") String emailOrPhone);
 	Member findByUserId(String userId);
-	
-	
-}
+	int existsByUserId(String userId);
+   }
+   
+   
+       
+      
+   
