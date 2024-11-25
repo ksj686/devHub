@@ -13,7 +13,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import app.labs.profile.model.Profile;
 import app.labs.profile.service.ProfileService;
+import app.labs.register.model.Member;
 import app.labs.register.service.MemberService;
+import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 
 @Controller
@@ -22,6 +24,8 @@ public class ProfileController {
 
     @Autowired
     ProfileService profileService;
+    @Autowired
+    MemberService memberService;
     
     @GetMapping("/profile/home")
     public String home(String userId, Model model) {
@@ -37,16 +41,22 @@ public class ProfileController {
     }  
     
     @GetMapping("/profile/{userId}")
-    public String getProfileInfo(@PathVariable("userId") String userId,Model model) {
+    public String getProfileInfo(@PathVariable("userId") String userId, HttpSession session, Model model) {
+    	String sessionId = (String) session.getAttribute("userid");
     	Profile profile = profileService.getProfileInfo(userId);
+    	Member userInfo = profileService.getMemberInfo(userId);
+    	model.addAttribute("sessionId", sessionId);
+    	model.addAttribute("userInfo",userInfo);
     	model.addAttribute("profile", profile);
     	
     	return "thymeleaf/profile/view";
     }  
     
     @GetMapping("/profile/insert")
-    public String insertProfile(Model model) {
-    	
+    public String insertProfile(HttpSession session, Model model) {
+    	String userId = (String) session.getAttribute("userid");
+    	Member userInfo = profileService.getMemberInfo(userId);
+    	model.addAttribute("userInfo", userInfo); // 세션 id에 해당하는 유저 정보를 insert form에 보내기.
     	return "thymeleaf/profile/insertform";
     }  
     
@@ -56,15 +66,17 @@ public class ProfileController {
     		profileService.insertProfile(profile);
         	log.info("프로필 insert 성공!");
             redirectAttributes.addFlashAttribute("message", "프로필 생성 완료");
-            // 본인페이지로 넘어가도록 하기. (그러려면 user id 가 하나만 있도록 해야할듯.)
-    	} catch (RuntimeException e) {
+            return "redirect:/profile/" + profile.getUserId();
+        } catch (RuntimeException e) {
     		redirectAttributes.addFlashAttribute("message", e.getMessage());
+    	    return "redirect:/profile/list"; 
     	}
-    	return "redirect:/thymeleaf/profile/list"; 
     } 
     
     @GetMapping("/profile/update")
     public String updateProfile(@RequestParam("userId") String userId ,Model model) {
+    	Member userInfo = profileService.getMemberInfo(userId);
+    	model.addAttribute("userInfo", userInfo); // 세션 id에 해당하는 유저 정보를 insert form에 보내기.
     	model.addAttribute("profile", profileService.getProfileInfo(userId));
     	
     	return "thymeleaf/profile/updateform";
