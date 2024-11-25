@@ -86,17 +86,46 @@ public class BasicMemberService implements MemberService {
 		return memberRepository.getAllPhoneNumbers();
 	}
 
-	
+	 @Override
+	    public String findUserIdByEmailOrPhone(String emailOrPhone) {
+	        try {
+	            Member member = memberRepository.findByEmailOrPhone(emailOrPhone);
+	            return member != null ? member.getUserId() : null;
+	        } catch (Exception e) {
+	            System.err.println("Error finding userId: " + e.getMessage());
+	            return null;
+	        }
+	    }
 
-	
+	  @Override
+	    public String findPasswordByEmailOrPhone(String emailOrPhone) {
+	        try {
+	            Member member = memberRepository.findByEmailOrPhone(emailOrPhone);
+	            return member != null ? member.getUserPwd() : null;
+	        } catch (Exception e) {
+	            System.err.println("Error finding password: " + e.getMessage());
+	            return null;
+	        }
+	    }
 
-	
+	  public boolean isUserIdDuplicated(String userId) {
+	        logger.debug("Checking if userId exists: {}", userId);
+	        int exists = memberRepository.existsByUserId(userId);
+	        boolean tf; 
+	        if (exists > 0) tf = true; 
+	        else   tf = false; 
+	        logger.debug("UserId exists: {}", exists);
+	        return tf;
+	    }
 
-	
+	@Override
+	public boolean existsByUserId(String userId) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	 
 
 
-
-	
 	
 }
 
