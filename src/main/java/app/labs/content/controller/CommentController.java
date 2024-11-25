@@ -49,8 +49,26 @@ public class CommentController {
     
     // 댓글 삭제
     @DeleteMapping("/contents/{contentId}/comments/{commentId}")
-    public ResponseEntity<Void> deleteComment(@PathVariable("contentId") int commentId) {
-        commentService.deleteComment(commentId);
+    public ResponseEntity<Void> deleteComment(
+            @PathVariable("contentId") int contentId,
+            @PathVariable("commentId") int commentId,
+            HttpSession session) {
+
+        String userId = (String) session.getAttribute("userid"); // 현재 로그인한 사용자 ID
+        if (userId == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build(); // 로그인하지 않은 경우
+        }
+
+        Comment comment = commentService.getCommentById(commentId); // 댓글 정보 조회
+        if (comment == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // 댓글이 없는 경우
+        }
+
+        if (!comment.getUserId().equals(userId)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build(); // 권한 없는 경우
+        }
+
+        commentService.deleteComment(commentId, userId); // 댓글 삭제
         return ResponseEntity.ok().build();
     }
 }

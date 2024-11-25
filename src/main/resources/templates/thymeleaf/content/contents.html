@@ -2,14 +2,18 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{/thymeleaf/default_layout}">
+	layout:decorate="~{/thymeleaf/main_content}">
+	
+<th:block layout:fragment="css">
+    <link rel="stylesheet" th:href="@{/css/contents/contentsList.css}" />
+</th:block>
 
 
 <div layout:fragment="content">
     <h1 class="page-title">글 목록</h1>
   
-    <div class="contents-links">
-    	<a href="contents/new" class = "contents-link">새로운 글 작성</a> 
+    <div class="button-container">
+    	<span id="createContent" class="create-btn" onclick="location.href='contents/new'">글 작성</span>
 	</div>
 	
 	<table class = "contents-table">
@@ -23,7 +27,7 @@
 		<tbody>
 			<tr th:each="content : ${contents}" class="contents-row">
 				<td class="table-cell"><a th:href="@{/contents/{contentId}(contentId=${content.contentId})}" 
-					th:utext="${content.title}"></a></td>
+					th:utext="${content.title}" class="contents-link"></a></td>
 				<td th:text="${content.userId}" class="table-cell"></td>
 				<td th:text="${content.dateCreated}" class="table-cell"></td>
 			</tr>
@@ -33,7 +37,7 @@
     <div>
         <ul class="pagination">
             <li th:if="${currentPage > 1}">
-                <a th:href="@{/contents(page=${currentPage - 1})}">&laquo; Previous &nbsp&nbsp</a>
+                <a th:href="@{/contents(page=${currentPage - 1})}">&laquo; Previous</a>
             </li>
             <li th:each="pageNum : ${#numbers.sequence(1, totalPages)}">
                 <a th:href="@{/contents(page=${pageNum})}" 
@@ -41,10 +45,23 @@
                    th:text="${pageNum}"></a>
             </li>
             <li th:if="${currentPage < totalPages}">
-                <a th:href="@{/contents(page=${currentPage + 1})}">&nbsp&nbsp Next &raquo;</a>
+                <a th:href="@{/contents(page=${currentPage + 1})}">Next &raquo;</a>
             </li>
         </ul>
     </div>
-	
+    
+        <!-- 검색 기능 -->
+    <div class="search-bar">
+        <select id="searchFilter" class="search-select">
+            <option value="content">내용</option>
+            <option value="receiverId">받는 사람 ID</option>
+        </select>
+        <input name="searchText" type="text" id="searchText" class="search-input" placeholder="검색어를 입력하세요"/>
+        <div id="searchButton" class="search-button">검색</div>
+    </div>
+    
+    <th:block layout:fragment="script">
+		<script type="text/javascript" th:src="@{/js/message/sent.js}"></script>
+	</th:block>
 </div>
 </html>
