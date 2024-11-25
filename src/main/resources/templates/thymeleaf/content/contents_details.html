@@ -2,173 +2,61 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{/thymeleaf/default_layout}">
+	layout:decorate="~{/thymeleaf/main_content}">
+	
+<th:block layout:fragment="css">
+    <link rel="stylesheet" th:href="@{/css/contents/contentView.css}" />
+</th:block>
+
 
 <div layout:fragment="content">
 
-    <h1 th:text="${content.title}">Title</h1>
-     <p><strong>Author:</strong> <span th:text="${content.userId}">User ID</span></p>
-    <p><strong>Date Created:</strong> <span th:text="${content.dateCreated}">Date Created</span></p>
-    <p><strong>Last Updated:</strong> <span th:text="${content.lastUpdated}">Last Updated</span></p>
-    <p><strong>Content:</strong></p>
-    <p th:text="${content.text}">Content Text</p>
-    
-<!--     <p>
-        <strong>Recommendations:</strong>
-        <span id="recommend-count" th:text="${content.recommendCnt}">0</span>
-    </p>
-    <button id="recommend-button">Recommend</button> -->
-    
-    <h2>Comments</h2>
-	<div id="comments-section">
-	    <ul>
-	        <li th:each="comment : ${comments}">
-	            <strong th:text="${comment.userId}">User ID</strong>:
-	            <span th:text="${comment.text}">Comment Text</span>
-	            <small th:text="${comment.dateCreated}">Date Created</small>
-	        </li>
-	    </ul>
-	</div>
+	<div class='form-0'>
+		<div class='form'>
+		    <h1 class="page-title" th:text="${content.title}">Title</h1>
+		    	<div clas="create-info">
+				    <strong>Author:</strong> <span class="author" th:text="${content.userId}">User ID</span>
+				    <strong>Date Created:</strong> <span class="date-created" th:text="${content.dateCreated}">Date Created</span>
+				    <strong>Last Updated:</strong> <span class="last-updated" th:text="${content.lastUpdated}">Last Updated</span>
+		    	</div>
+		    <textarea class="main-area" th:text="${content.text}">Content Text</textarea>
+		    
+		    <button class="recommend-btn" id="recommend-button" th:attr="data-id=${content.contentId}">추천!</button>
+		    <span class="recommend-cnt" id="recommend-count" th:text="${content.recommendCnt}">0</span>
+		    
+		    <h2>Comments</h2>
+			<div class = "comment-section" id="comments-section">
+			    <ul>
+			        <li th:each="comment : ${comments}">
+			            <strong class="comment-uid" th:text="${comment.userId}">User ID</strong>:
+			            <span class="comment-text" th:text="${comment.text}">Comment Text</span>
+			            <small class="comment-date" th:text="${comment.dateCreated}">Date Created</small>
+			                    <!--삭제 버튼 표시 -->
+				        <button type="button" class="delete-comment-button"
+				                th:attr="data-comment-id=${comment.commentId}"
+				                th:attrappend=" data-content-id=${content.contentId}">
+				                삭제
+				        </button>
+			        </li>
+			    </ul>
+			</div>
+		</div>
+			
+			    
+	    <h3>Add a Comment</h3>
+		<form id="comment-form" th:attr="data-id=${content.contentId}">
+	    	<textarea name="text" rows="5" cols="50" required></textarea>
+	    	<button type="submit">Add Comment</button>
+		</form>
 	    
-    <h3>Add a Comment</h3>
-	<form id="commentForm" th:attr="data-id=${content.contentId}">
-    	<textarea name="text" rows="5" cols="50" required></textarea>
-    	<button type="submit">Add Comment</button>
-	</form>
-    
-    <button onclick="location.href='/contents'">목록</button>
-
-	<button th:onclick="'location.href=\'/contents/edit/' + ${content.contentId} + '\''">수정</button>
-	<button class="delete-button" th:data-id="${content.contentId}" th:data-user-id="${content.userId}">삭제</button>
-
+	    <button onclick="location.href='/contents'">목록</button>
+	
+		<button th:onclick="'location.href=\'/contents/edit/' + ${content.contentId} + '\''">수정</button>
+		<button class="delete-button" th:data-id="${content.contentId}" th:data-user-id="${content.userId}">삭제</button>
+		
+	</div>
 </div>
-
-
-
-
-	<th:block layout:fragment="script">
-	<script>
-   
-	document.addEventListener('DOMContentLoaded', function () {
-	    document.querySelectorAll('.delete-button').forEach(button => {
-	        button.addEventListener('click', function () {
-	            const contentId = this.getAttribute('data-id'); // 글 ID
-	            const originalUserId = this.getAttribute('data-user-id'); // 원래 글의 userId
-	            const enteredUserId = prompt('이 글을 삭제하려면 ID를 입력하세요:'); // userId 입력받기	
-	            if (!enteredUserId) {
-	                alert('글을 삭제하기 위해서는 유저 ID가 필요합니다.');
-	                return;
-	            }	
-	            // 서버로 삭제 요청
-	            fetch(`/contents/${contentId}`, {
-	                method: 'DELETE',
-	                headers: { 'Content-Type': 'application/json' },
-	                body: JSON.stringify({ enteredUserId }) // 입력받은 userId 전달
-	            })
-	            .then(response => {
-	                if (response.ok) {
-	                    alert('글 삭제가 완료되었습니다.');
-	                    window.location.href = '/contents'; // 삭제 후 contents 페이지로 이동
-	                } else if (response.status === 403) {
-	                    alert('입력한 ID가 작성자의 ID와 일치하지 않습니다.');
-	                } else {
-	                    alert('Failed to delete content. Please try again.');
-	                }
-	            })
-	            .catch(error => {
-	                console.error('Error occurred while deleting content:', error);
-	                alert('An error occurred. Please try again.');
-	            });
-	        });
-	    });
-	});
-
-	
-	
-
-	document.querySelector('#commentForm').addEventListener('submit', function (e) {
-	    e.preventDefault();
-
-	    // 현재 폼에서 data-id 속성 가져오기
-	    const contentId = this.getAttribute('data-id');
-	    if (!contentId) {
-	        alert('Content ID not found!');
-	        return;
-	    }
-
-	    const text = this.querySelector('textarea[name="text"]').value;
-
-	    fetch(`/contents/${contentId}/comments`, {
-	        method: 'POST',
-	        headers: { 'Content-Type': 'application/json' },
-	        body: JSON.stringify({ text })
-	    }).then(response => {
-	        if (response.ok) {
-	            loadComments(contentId); // 댓글 목록 갱신
-	        } else {
-	            alert('Failed to add comment');
-	        }
-	    }).catch(error => {
-	        console.error('Error:', error);
-	        alert('An error occurred while adding the comment.');
-	    });
-	});
-
-    function loadComments(contentId) {
-        fetch(`/contents/${contentId}/comments`)
-            .then(response => response.json())
-            .then(comments => {
-                const commentsSection = document.getElementById('comments-section');
-                const commentsList = commentsSection.querySelector('ul');
-                commentsList.innerHTML = ''; // 기존 댓글 초기화
-
-                comments.forEach(comment => {
-                    const li = document.createElement('li');
-                    li.innerHTML = `
-                        <strong>${comment.userId}</strong>: ${comment.text}
-                        <small>${new Date(comment.dateCreated).toLocaleString()}</small>
-                    `;
-                    commentsList.appendChild(li);
-                });
-            });
-    }
-
-
-
-
-        
-/*     document.getElementById('recommend-button').addEventListener('click', function () {
-        const contentId = [[${content.contentId}]];
-        
-        console.log("Content ID:", contentId);
-        
-        fetch(`/contents/${contentId}/recommend`, {
-            method: 'POST'
-        })
-        .then(response => {
-            if (response.ok) {
-                return response.text(); // 서버 응답을 텍스트로 처리
-            } else {
-                throw new Error('Failed to recommend the content. Status code: ' + response.status);
-            }
-        })
-        .then(updatedCountText => {
-            // 응답된 텍스트를 숫자로 변환
-            const updatedCount = parseInt(updatedCountText, 10);
-            if (!isNaN(updatedCount)) {
-                // 추천 수 업데이트
-                document.getElementById('recommend-count').textContent = updatedCount;
-            } else {
-                console.error('Invalid response: expected a number, got ', updatedCountText);
-            }
-        })
-        .catch(error => {
-            console.error("Error occurred:", error);
-            alert('Error occurred while processing recommendation.');
-        });
-    }); 
-*/
-
-    </script>
-	</th:block>
+<th:block layout:fragment="script">
+	<script type="text/javascript" th:src="@{/js/contents/details.js}"></script>
+</th:block>
 </html>

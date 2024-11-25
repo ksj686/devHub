@@ -51,15 +51,15 @@ public class BasicContentService implements ContentService {
 		return contentRepository.getAllContents();
 	}
 	
-//    @Override
-//    public void increaseRecommend (int contentId) {
-//        contentRepository.increaseRecommend (contentId); // DB에서 추천 수 증가
-//    }
-//    
-//    @Override
-//    public int getRecommendCount(int contentId) {
-//        return contentRepository.getRecommendCount(contentId); // DB에서 추천 수 조회
-//    }
+    @Override
+    public void increaseRecommend (int contentId) {
+        contentRepository.increaseRecommend (contentId); // DB에서 추천 수 증가
+    }
+    
+    @Override
+    public int getRecommendCount(int contentId) {
+        return contentRepository.getRecommendCount(contentId); // DB에서 추천 수 조회
+    }
 	
     @Override
     public List<Content> getPagedContents(@Param("offset") int page, @Param("offset") int size) {

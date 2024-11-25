@@ -27,13 +27,6 @@ public class ContentController {
     private ContentService contentService;
     @Autowired
     private CommentService commentService;
-
-//    @GetMapping("/contents")
-//    public String getAllContents(Model model) {
-//        List<Content> contents = contentService.getAllContents();
-//        model.addAttribute("contents", contents);
-//        return "thymeleaf/content/contents";
-//    }
     
     @GetMapping("/contents")
     public String getContents(
@@ -69,12 +62,6 @@ public class ContentController {
         model.addAttribute("content", new Content());
         return "thymeleaf/content/contents_form";
     }
-
-//    @PostMapping("/contents")
-//    public String createContent(@ModelAttribute Content content) {
-//        contentService.createContent(content);
-//        return "redirect:/contents";
-//    }
     
     @PostMapping("/contents")
     public String createContent(@ModelAttribute Content content, HttpSession session) {
@@ -102,27 +89,61 @@ public class ContentController {
         return "redirect:/contents/" + contentId;
     }
 
+//    @ResponseBody
+//    @DeleteMapping("/contents/{contentId}")
+//    public ResponseEntity<Void> deleteContent( @PathVariable("contentId") int contentId, @RequestBody Map<String, String> requestBody) {
+//            String enteredUserId = requestBody.get("enteredUserId");   // 입력받은 userId
+//            boolean isDeleted = contentService.deleteContent(contentId, enteredUserId);    // 삭제 로직 실행
+//
+//            if (isDeleted) {
+//                return ResponseEntity.ok().build(); // 200 OK
+//            } else {
+//                return ResponseEntity.status(HttpStatus.FORBIDDEN).build(); // 403 Forbidden
+//            }
+//    }
+    
     @ResponseBody
     @DeleteMapping("/contents/{contentId}")
-    public ResponseEntity<Void> deleteContent( @PathVariable("contentId") int contentId, @RequestBody Map<String, String> requestBody) {
-            String enteredUserId = requestBody.get("enteredUserId");   // 입력받은 userId
-            boolean isDeleted = contentService.deleteContent(contentId, enteredUserId);    // 삭제 로직 실행
+    public ResponseEntity<Void> deleteContent(
+            @PathVariable("contentId") int contentId,
+            HttpSession session) {
 
-            if (isDeleted) {
-                return ResponseEntity.ok().build(); // 200 OK
-            } else {
-                return ResponseEntity.status(HttpStatus.FORBIDDEN).build(); // 403 Forbidden
-            }
+        // 로그인한 사용자 ID 가져오기
+        String loggedInUserId = (String) session.getAttribute("userid");
+        if (loggedInUserId == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build(); // 로그인 안 된 경우
+        }
+
+        // 글 정보 가져오기
+        Content content = contentService.getContentInfo(contentId);
+        if (content == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // 글이 없는 경우
+        }
+
+        // 작성자와 로그인한 사용자 비교
+        if (!content.getUserId().equals(loggedInUserId)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build(); // 권한 없는 경우
+        }
+
+        // 글 삭제
+        contentService.deleteContent(contentId, loggedInUserId);
+        return ResponseEntity.ok().build();
     }
     
     
     
-//    @PostMapping("/{contentId}/recommend")
-//    public ResponseEntity<Integer> recommendContent(@RequestParam(name="contentId")  int contentId) {
-//    	
-//        contentService.increaseRecommend(contentId);         // 추천 수 증가
-//        int updatedCount = contentService.getRecommendCount(contentId);   // DB에서 업데이트된 추천 수 조회
-//        return ResponseEntity.ok(updatedCount);        // 업데이트된 추천 수 반환
-//    }
+    // 추천 수 증가
+    @PostMapping("/contents/{contentId}/recommend")
+    public ResponseEntity<Void> recommendContent(@PathVariable("contentId") int contentId) {
+        contentService.increaseRecommend(contentId);
+        return ResponseEntity.ok().build();
+    }
+
+    // 추천 수 조회
+    @GetMapping("/contents/{contentId}/recommend")
+    public ResponseEntity<Integer> getRecommendCount(@PathVariable("contentId") int contentId) {
+        int recommendCount = contentService.getRecommendCount(contentId);
+        return ResponseEntity.ok(recommendCount);
+    }
     
 }

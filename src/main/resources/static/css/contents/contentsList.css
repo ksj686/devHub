@@ -1,0 +1,164 @@
+@charset "UTF-8";
+
+/* 페이지 전체 스타일 */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    /* background-color: #f9f9f9; */
+}
+
+.content{
+	padding-top: 20px
+}
+
+/* 글 링크 */
+.contents-links {
+    padding: 10px;
+    font-size: 14px;
+    text-align: left;
+    background-color: #f1f1f1;
+    border-bottom: 1px solid #ddd;
+}
+
+.contents-link {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.contents-link:hover {
+    text-decoration: underline;
+}
+
+/* 페이지 제목 */
+.page-title {
+    font-size: 24px;
+    margin: 20px 0 10px;
+    padding: 0 20px;
+    color: #333;
+}
+
+/* 버튼 컨테이너 */
+.button-container {
+    padding: 10px 5px;
+    display: flex;
+    gap: 10px;
+    margin: 20px;
+}
+
+.create-btn{
+    position: relative;
+    padding: 10px 20px;
+    border-radius: 15px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.25s;
+    background-color: #3AA0E4;
+    color: #fff;
+}
+
+.create-btn:hover {
+	font-weight: bold;
+	transform: scale(1.1);
+}
+
+
+/* 글 테이블 */
+.contents-table {
+    width: 96%;
+    border-collapse: collapse;
+    margin: 0 20px 20px;
+    background-color: #fff;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.contents-table thead {
+    background-color: #f1f1f1;
+}
+
+.table-header {
+    font-size: 14px;
+    font-weight: bold;
+    text-align: left;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.table-cell {
+    font-size: 14px;
+    text-align: left;
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.contents-row:hover {
+    background-color: #f9f9f9;
+}
+
+/* 검색 바 */
+.search-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* 내부 요소 가운데 정렬 */
+    width: 300px; /* 좌우 크기 300px */
+    height: 30px; /* 높이 30px */
+    margin: 10px auto; /* 상하 여백 10px, 좌우 자동 정렬 */
+    padding: 0 10px; /* 양옆 패딩 */
+    gap: 10px; /* 내부 요소 간 간격 */
+    border-radius: 5px; /* 모서리 둥글게 */
+}
+
+.search-select {
+    padding: 5px 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.search-input {
+    flex: 1;
+    padding: 5px 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.search-button {
+    padding: 7px 15px;
+    font-size: 14px;
+    color: blue;
+    border: 1px solid blue;
+    border-radius: 5px;
+    cursor: pointer;
+    white-space: nowrap;
+    background-color: white;
+}
+
+.search-button:hover {
+    background-color: #e4ecf3;
+    text-decoration: underline;
+	font-weight: bold;
+	transform: scale(1.1);
+}
+
+
+/*페이지*/
+.pagination {
+	padding: 10px 20px;
+	margin-right: 40px;
+	margin-left: 20px;
+    display: flex;
+    gap: 10px;
+    font-size: 14px;
+    background-color: #e4ecf3;
+    text-decoration: none;
+    color: #007bff;
+}
+
+.pagination:hover {
+   	font-weight: bold;
+}
+
+th {
+	cursor: pointer;
+}
