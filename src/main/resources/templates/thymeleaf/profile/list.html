@@ -4,21 +4,27 @@
 	layout:decorate="~{/thymeleaf/default_layout}">
 
 <div layout:fragment="content">
+	
+	<div class="list-container">
 	<h1>Profile List</h1>
 	[[ ${message } ]] <!-- 리다이렉트 메시지 출력 -->
-	<a th:href="@{/profile/insert}" class="btn btn-primary">New Profile</a>
+		<div class="list-buttons">
+			<a th:href="@{/profile/insert}" class="btn btn-primary">프로필 생성</a>
+		</div>
 	<table border="1" class="table">
-	<tr>
+	
+	 <tr>
 		<th>USER_ID</th>
 		<th>USER_NAME</th>
 		<th>COURSE_ID</th>
 	</tr>
-	<tr th:each="profile : ${profileList}"> <!--/* for each 문을 thmeleaf 문으로 교체 */-->
+	<tr th:each="profile : ${profileList}">
 		<td><a th:href="@{/profile/{id}(id=${profile.userId},)}" th:utext="${profile.userId}"></a></td>
 		<td th:utext="${profile.userName}"></td>
 		<td th:utext="${profile.courseId}"></td>
 	</tr>
 	</table>
+	</div>
+	
 </div>
-
 </html>

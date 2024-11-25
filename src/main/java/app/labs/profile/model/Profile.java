@@ -8,7 +8,7 @@ import lombok.ToString;
 @ToString //(exclude= {"profileImageData", "backgroundImageData"})
 
 public class Profile {
-	private Long profileId;
+	private int profileId;
     private String userId;
     private String userName;
     private String email;
