@@ -2,19 +2,22 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{/thymeleaf/default_layout}">
+	layout:decorate="~{/thymeleaf/main_content}">
+
+<th:block layout:fragment="css">
+    <link rel="stylesheet" th:href="@{/css/contents/contentForm.css}" />
+</th:block>
 
 <div layout:fragment="content">
-    <h1>Edit Content</h1>
-   <form th:action="@{/contents/edit/{id}(id=${content.contentId})}" th:object="${content}" method="post">
-    
-       <label for="title">제목:</label>
-       <input type="text" id="title" name="title" th:value="${content.title}" required />
+	<div class='form-0'>
+		<form class="form" th:action="@{/contents/edit/{id}(id=${content.contentId})}" th:object="${content}" method="post">
 
-        <label for="text">내용:</label>
-        <textarea id="text" name="text" required th:text="${content.text}"></textarea>
+			<input class="title" type="text" id="title" name="title"  maxlength="50" placeholder="제목 입력, 최대 50자까지 가능합니다" th:value="${content.title}" required />
 
-        <button type="submit">저장</button>
-	</form>
+			<textarea class = "write-content" id="text" name="text" rows="20" cols="20" th:value="${content.text}" required></textarea>
+
+			<button class = "submit-btn" type="submit">저장</button>
+		</form>
+	</div>
 </div>
 </html>

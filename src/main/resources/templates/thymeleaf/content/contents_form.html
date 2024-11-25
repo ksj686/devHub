@@ -2,24 +2,26 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{/thymeleaf/default_layout}">
+	layout:decorate="~{/thymeleaf/main_content}">
+	
+<th:block layout:fragment="css">
+    <link rel="stylesheet" th:href="@{/css/contents/contentForm.css}" />
+</th:block>
 
 
 <div layout:fragment="content">
-    <h1>Create New Content</h1>
-	<form th:action="@{/contents}" th:object="${content}" method="post">
+    
+    <div class='form-0'>
+		<form class="form" th:action="@{/contents}" th:object="${content}" method="post">
 	
-	    <label for="title">Title:</label>
-	    <input type="text" id="title" name="title" th:value="${content.title}" required />
-	    
-<!-- 	    <label for="userId">User ID:</label> -->
-<!-- 	    <input type="text" id="userId" name="userId" th:value="${content.userId}" required /> -->
-	    <input type="hidden" name="userId" th:value="${session.userid}" /> <!-- 세션의 userId 사용 -->
-	
-	    <label for="text">Content:</label>
-	    <textarea id="text" name="text" th:value="${content.text}" required></textarea>
-	
-	    <button type="submit">Submit</button>
-	</form>
+		    <input class="title" type="text" id="title" name="title"  maxlength="50" placeholder="제목 입력, 최대 50자까지 가능합니다" th:value="${content.title}" required />
+		    
+		    <input type="hidden" name="userId" th:value="${session.userid}" /> <!-- 세션의 userId 사용 -->
+		
+		    <textarea class = "write-content" id="text" name="text" rows="20" cols="20" th:value="${content.text}" required></textarea>
+		
+		    <button class = "submit-btn" type="submit">제출</button>
+		</form>
+	</div>
 </div>
 </html>
