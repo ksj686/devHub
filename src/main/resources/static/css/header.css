@@ -153,8 +153,8 @@ body, html {
 }
 @media (min-width: 992px) {
   .masthead {
-    padding-top: 9.5rem;
-    padding-bottom: 9.5rem;
+    padding-top: 4.5rem;
+    padding-bottom: 4.5rem;
   }
   .masthead h1, .masthead  .h1,
   .masthead .site-heading h1,
@@ -237,4 +237,9 @@ header.dark-mode {
 .mode-toggle-btn.dark-mode {
     background-color: #a99472;
     color: #ecf0f1;
+}
+
+.envelop{
+	font-size: 30px;
+	color: #2e3a77;
 }

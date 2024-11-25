@@ -10,10 +10,12 @@
 		      <a href="/"><img src="/assets/logo.png" alt="로고"></a>
 		    </div>
 		    <nav class="nav">
-		      <a href="#">공지사항</a>
-		      <a href="#">게시판</a>
-		      <a href="#">Q/A</a>
+		      <a href="/notices">공지사항</a>
+		      <a href="/contents">게시판</a>
 		      <a href="#">About Code Connect</a>
+		      <a href="/journals" th:if="${session.userid != null}">
+		      	수업일지
+		      </a>
 		    </nav>
 		    <div class="right-section">
 		    	<button id="mode-toggle" class="mode-toggle-btn">🌙</button>
@@ -21,8 +23,11 @@
 		        <input type="text" placeholder="검색어를 입력하세요" />
 		        <button>🔍</button>
 			</div>
-			<a href="/members/login" class="btn" th:if="${session.userid == null}">로그인</a>
-			<a href="/members/logout" class="btn" th:if="${session.userid != null}">로그아웃</a>
+			<a href="/members/login" th:if="${session.userid == null}">로그인</a>
+			<a href="/message/received" th:if="${session.userid != null}">
+				<i class="envelop bi bi-envelope-arrow-up"></i>
+			</a>
+			<a href="/members/logout" th:if="${session.userid != null}">로그아웃</a>
 			<a href="/members/insert"  th:if="${session.userid == null}">회원가입</a>
 		    </div>
 		</header>

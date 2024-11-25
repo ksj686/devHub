@@ -69,3 +69,21 @@
     height: 320px;
     /* padding-top: 48px !important; */
 }
+
+.col-lg-7{
+	width: 56%;
+	padding-left: 110px;
+}
+
+.btn{
+	background-color: #3AA0E4;
+}
+
+.ratio-img {
+    width: 100%; /* 이미지의 너비를 부모 요소에 맞춤 */
+    height: auto; /* 자동 높이 설정으로 비율 유지 */
+    object-fit: contain; /* 이미지가 비율을 유지하며 요소를 채우도록 설정 */
+    aspect-ratio: 16/9; /* 이미지의 비율을 16:9로 설정 (원하는 비율로 변경 가능) */
+    display: block;
+    margin: auto;
+}
