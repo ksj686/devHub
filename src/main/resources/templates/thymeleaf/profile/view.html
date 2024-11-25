@@ -1,54 +1,46 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{/thymeleaf/default_layout}">
-
+      layout:decorate="~{/thymeleaf/default_layout_main}">
+      
+<th:block layout:fragment="css">
+    <link rel="stylesheet" th:href="@{/css/profile/profilemain.css}" />
+</th:block>
 <div layout:fragment="content">
-	<h1>Profile Page</h1>
-		
-	<table border="1" th:object="${profile}" class="table">
-    <!-- th:object="${profile}"  -->
-    
-        <!-- 프로필 배경 이미지 -->
-        <!-- <tr>
-        	<td >
-        		<input type="file" accept="image/*" name="upload_profileimage">
-        	</td>
-        </tr> -->
-        
-        <!-- 프로필 이미지 -->
-        <!-- <tr>
-        	<td>
-        		<input type="file" accept="image/*" name="upload_backgroundimage">
-        	</td>
-        </tr> -->
-        
-
-    	<!-- 프로필 상세 정보 -->
-    	<tr>
-        	<th>ID</th>
-			<td th:utext="*{userId}"></td>
-        </tr>
-        <tr>
-        	<th>이름</th>
-			<td th:utext="*{userName}"></td>
-        </tr>
-        <tr>
-        	<th>e-mail</th>
-			<td th:utext="*{email}"></td>
-        </tr>
-        <tr>
-        	<th>소속</th>
-			<td th:utext="*{courseId}"></td>
-        </tr>
-        <tr>
-        	<th>자기소개</th> 
-			<td th:utext="*{biography}"></td>
-        </tr>
-    </table>
-           
- 	<a th:href="@{update(userId=${profile.userId})}" class="btn btn-primary">수정하기</a>
- 	
+	
+   	<form action="/profile/insert" method="post">
+   	<div class="profile-container">
+   	<h1 th:each="user:${userInfo}" th:text="${user.userId}+ '\'s Profile'"></h1>
+   	<!-- 프로필 상세 정보 -->
+    	<div class="rofile-row">
+        	<div class="profile-label">아이디</div>
+			<div class="profile-value"><a th:utext="${userInfo.userId}"></a></div>        
+		</div>
+        <div class="rofile-row">
+        	<div class="profile-label">이름</div>
+			<div class="profile-value"><a th:utext="${userInfo.userName}"></a></div>
+        </div>
+        <div class="rofile-row">
+        	<div class="profile-label">e-mail</div>
+			<div class="profile-value"><a th:utext="${userInfo.email}"></a></div>
+        </div>
+        <div class="rofile-row">
+        	<div class="profile-label">소속</div>
+			<div class="profile-value"><a th:utext="${userInfo.courseId}"></a></div>
+        </div>
+        <div class="rofile-row">
+        	<div class="profile-label">자기소개</div>
+        	<div class="profile-value"><a th:utext="${profile.biography != null ? profile.biography : '자기소개를 입력해주세요'}"></a></div>
+        </div>
+				
+		<div class="profile-buttons">
+			<a th:if="${sessionId==profile.userId}" th:href="@{update(userId=${profile.userId})}"
+				class="btn btn-primary">수정하기</a>
+		</div>
+    </div>
+	</form>
+   
+   
 </div>
 
 </html>

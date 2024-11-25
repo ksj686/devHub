@@ -18,6 +18,7 @@ public class Member {
     private String email;
     private String phoneNumber;
     private String userStatus;
+    private String courseId;
     private Date lastLogin;
     
 

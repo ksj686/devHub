@@ -2,57 +2,48 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{/thymeleaf/default_layout}">
-
+      
+<th:block layout:fragment="css">
+    <link rel="stylesheet" th:href="@{/css/profile/profilemain.css}" />
+</th:block>
 <div layout:fragment="content">
-	<h1>Profile Edit</h1>
-	<form action="/profile/update" method="post" enctype="multipart/form-data">
-	<table th:object="${profile}" class="table">    
-    
-        <!-- 프로필 배경 이미지 -->
-        <!-- <tr>
-        	<td >
-        		<input type="file" accept="image/*" name="upload_profileimage">
-        	</td>
-        </tr> -->
-        
-        <!-- 프로필 이미지 -->
-        <!-- <tr>
-        	<td>
-        		<input type="file" accept="image/*" name="upload_backgroundimage">
-        	</td>
-        </tr> -->
-        
+	
+   	<form action="/profile/update" method="post">
+   	<div class="profile-container">
+   	<h1 th:each="user:${userInfo}" th:text="${user.userId}+ '\'s Profile'"></h1>
 
     	<!-- 프로필 상세 정보 -->
-    	<tr>
-        	<th>ID</th>
-			<td><input type="text" th:field="*{userId}"></td>
-        </tr>
-        <tr>
-        	<th>이름</th>
-        	<td><input type="text" th:field="*{userName}"></td>
-        </tr>
-        <tr>
-        	<th>e-mail</th>
-        	<td><input type="text" th:field="*{email}"></td>
-        </tr>
-        <tr>
-        	<th>소속</th>
-        	<td><input type="text" th:field="*{courseId}"></td>
-        </tr>
-        <tr>
-        	<th>자기소개</th>
-        	<td><input type="text" th:field="*{biography}"></td>
-        </tr>
-		<!-- 저장/취소 -->
-		<tr>
-			<th>&nbsp;</th>
-			<td>
-				<input type="submit" value="저장" class="btn btn-primary"> 
-				<input type="reset" value="취소"class="btn btn-secondary">
-			</td>
-		</tr>
-     </table>
-</form>
+    	<div class="rofile-row">
+        	<div class="profile-label">아이디</div>
+			<div class="profile-value"><input name="userId" th:each="user:${userInfo}" th:value="${user.userId}" readonly></div>        
+		</div>
+        <div class="rofile-row">
+        	<div class="profile-label">이름</div>
+			<div class="profile-value"><input name="userName" th:each="user:${userInfo}" th:value="${user.userName}" readonly></div>
+        </div>
+        <div class="rofile-row">
+        	<div class="profile-label">e-mail</div>
+			<div class="profile-value"><input name="email" th:each="user:${userInfo}" th:value="${user.email}" readonly></div>
+        </div>
+        <div class="rofile-row">
+        	<div class="profile-label">소속</div>
+			<div class="profile-value"><input name="courseId" th:each="user:${userInfo}" th:value="${user.courseId}" readonly></div>
+        </div>
+        <div class="rofile-row">
+        	<div class="profile-label">자기소개</div>
+        	<div class="profile-value"><textarea th:utext="${profile.biography}" id="biography" name="biography"></textarea></div>
+        	<!-- <input type="text" name="biography"> -->
+        </div>
+				
+		<div class="profile-buttons">
+		<button type="submit" class="btn btn-primary">저장</button>
+        <button type="reset" class="btn btn-secondary">취소</button>
+        
+		</div>
+    </div>
+	</form>
+   
+   
 </div>
+
 </html>
