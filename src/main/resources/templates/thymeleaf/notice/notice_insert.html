@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{/thymeleaf/default_layout_main}">
+	
+<th:block layout:fragment="css">
+	<!-- <link rel="stylesheet" th:href="@{/css/message/sent.css}" /> -->
+
+    <style>
+        #editor {
+            border: 1px solid #ccc;
+            padding: 10px;
+            min-height: 300px;
+            width: 100%;
+            white-space: pre-wrap;
+            overflow-y: auto;
+        }
+        #editor img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin-top: 10px;
+        }
+        #uploadBtn {
+            margin-top: 10px;
+        }
+    </style>
+</th:block>
+    <!-- jQuery -->
+    <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
+<div layout:fragment="content">
+
+<!-- Form Data (form 태그로 데이터를 제출) -->
+<form id="noticeForm" action="/submit_notice" method="POST" enctype="multipart/form-data">
+
+    <!-- 제목 필드 (서버로 전송될 필드) -->
+    <input type="text" name="title" placeholder="제목을 입력하세요" required />
+    
+    <!-- 글과 이미지를 입력할 공간 -->
+    <div contenteditable="true" id="editor" name="content"></div>
+
+    <!-- 숨겨진 textarea 필드 (서버로 전송될 값) -->
+    <textarea name="text" id="text" style="display:none;"></textarea>
+
+    <!-- 파일 업로드 버튼 -->
+    <input type="file" id="imageInput" name="image" accept="image/*" style="display: none;" />
+    <button type="button" id="uploadBtn">이미지 업로드</button>
+
+    <!-- 제출 버튼 -->
+    <button type="submit" id="submitBtn">제출</button>
+</form>
+</div>
+<th:block layout:fragment="script">
+	<!-- <script type="text/javascript" th:src="@{/js/message/sent.js}"></script> -->
+	<script>
+    // 파일 업로드 버튼 클릭 시 파일 선택 창을 열기
+    $("#uploadBtn").click(function() {
+        $("#imageInput").click();
+    });
+
+    // 이미지 선택 후 커서 위치에 이미지 삽입
+    $("#imageInput").change(function(event) {
+        let file = event.target.files[0];
+        if (file) {
+            let reader = new FileReader();
+            reader.onload = function(e) {
+                let base64Image = e.target.result;
+                insertImageAtCursor(base64Image);
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+    // 커서 위치에 이미지를 삽입하는 함수
+    function insertImageAtCursor(base64Image) {
+        let editor = $("#editor")[0];  // contenteditable 영역
+        let imgTag = `<img src="${base64Image}" alt="image" />`;
+        
+        // 커서 위치에 이미지 삽입
+        let selection = window.getSelection();
+        
+    	// 커서가 editor 내에 있는지 확인 
+        if (selection.rangeCount > 0) { 
+        	let range = selection.getRangeAt(0); 
+        	if (editor.contains(range.commonAncestorContainer)) { 
+        		range.deleteContents(); range.insertNode(document.createRange().createContextualFragment(imgTag)); 
+        	} else { 
+        		// 커서가 editor 밖에 있는 경우 editor의 맨 아래에 이미지 삽입 
+        		editor.innerHTML += imgTag; 
+        	} 
+        } else { 
+        	// 커서가 editor 밖에 있는 경우 editor의 맨 아래에 이미지 삽입 
+        	editor.innerHTML += imgTag; 
+        }
+        
+        //let range = selection.getRangeAt(0);
+        //range.deleteContents();
+        //range.insertNode(document.createRange().createContextualFragment(imgTag));
+    }
+
+    // 폼 제출 전에 contenteditable 영역의 내용을 textarea로 전달하고 실제로 폼을 제출
+    $("#noticeForm").submit(function(e) {
+        e.preventDefault();  // 폼 제출을 막습니다
+
+        // contenteditable 영역의 HTML 내용을 가져와서 textarea에 삽입
+        let editorContent = $("#editor").html();
+        $("#text").val(editorContent.replace(/\n/g, '<br>'));
+
+        // 폼을 다시 제출합니다 (AJAX를 사용하지 않음)
+        this.submit();  // 폼을 실제로 제출합니다
+    });
+	</script>
+</th:block>
+
+
+<!-- <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script> -->
+</html>
