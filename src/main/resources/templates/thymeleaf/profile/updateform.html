@@ -1,16 +1,19 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{/thymeleaf/default_layout}">
-      
-<th:block layout:fragment="css">
-    <link rel="stylesheet" th:href="@{/css/profile/profilemain.css}" />
-</th:block>
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{/thymeleaf/default_layout}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile</title>
+  <link rel="stylesheet" th:href="@{/css/profile/profilemain.css}" > <!-- CSS 파일 연결 -->
+</head>
+
 <div layout:fragment="content">
 	
    	<form action="/profile/update" method="post" enctype="multipart/form-data">
    	<div class="profile-container">
-   	<h1 th:each="user:${userInfo}" th:text="${user.userId}+ '\'s Profile'"></h1>
+   	<h1 class="h1-title"  th:each="user:${userInfo}" th:text="${user.userId}+ '\'s Profile'"></h1>
    	
    		<!-- 프로필 상세 정보 -->
    		<div class="profile-image-container">
@@ -21,13 +24,14 @@
     				No Image
 				</div>
                 <!-- 프로필 이미지 표시 -->
-                <img th:if="${profile != null and profile.imageId != null}"
-                    th:src="@{/profile/image/{imageId}(imageId=${profile.imageId})}" 
+                <img id="preview-image"  
+                	 th:if="${profile != null and profile.imageId != null}"
+                     th:src="@{/profile/image/{imageId}(imageId=${profile.imageId})}" 
                      alt="Profile Image">
 			</div>
             	<!-- 파일 업로드 -->
             	<div class="file-upload">
-        		<label for="image" class="btn btn-secondary">이미지 선택</label>
+        		<label for="image">이미지 선택</label>
                 	<input type="file" name="image" id="image" accept="image/*" style="display: none;">
 	             	<input type="hidden" name="imageId2" id="imageId2" th:value="${profile.imageId}">
 				</div>
@@ -53,7 +57,6 @@
         <div class="rofile-row">
         	<div class="profile-label">자기소개</div>
         	<div class="profile-value"><textarea th:utext="${profile.biography}" id="biography" name="biography"></textarea></div>
-        	<!-- <input type="text" name="biography"> -->
         </div>
 				
 		<div class="profile-buttons">
@@ -66,5 +69,4 @@
    
    
 </div>
-
 </html>
