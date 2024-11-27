@@ -4,15 +4,26 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
-import app.labs.register.model.MyPageContent;
+import app.labs.register.model.MyContent;
 import app.labs.register.model.PostComment;
 
 @Mapper
 public interface MyPageContentRepository {
-    // 사용자가 작성한 게시글 목록을 가져오는 메서드
-    List<MyPageContent> findContentsByUserId(@Param("userId") String userId);
-
-    // 사용자가 작성한 댓글 목록을 가져오는 메서드
+    List<MyContent> findContentsByUserId(@Param("userId") String userId);
     List<PostComment> findCommentsByUserId(@Param("userId") String userId);
+    List<MyContent> findPostsByUserId(@Param("userId") String userId); // 기존 MyPostsByUserId 대신
+    List<MyContent> findFilteredPostsByUserId(@Param("userId") String userId); // 추가된 메서드
+
+   
+        MyContent findPostById(@Param("contentId") int contentId);
+    
+
+
 }
+
+
+   
+
+

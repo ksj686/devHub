@@ -21,6 +21,8 @@ public class BasicMemberService implements MemberService {
 	@Autowired
 	MemberRepository memberRepository;
 	
+
+	
 	private static final Logger logger = LoggerFactory.getLogger(BasicMemberService.class);
 
 
@@ -123,6 +125,8 @@ public class BasicMemberService implements MemberService {
 		// TODO Auto-generated method stub
 		return false;
 	}
+	
+
 	 
 
 

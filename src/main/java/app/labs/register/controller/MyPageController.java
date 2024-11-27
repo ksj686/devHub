@@ -7,19 +7,21 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import jakarta.servlet.http.HttpSession;
-
-import app.labs.register.model.MyPageContent;
 import app.labs.register.model.Member;
+import app.labs.register.model.MyContent;
 import app.labs.register.model.PostComment;
-import app.labs.register.service.MyPageService;
+import app.labs.register.service.BasicMemberService;
 import app.labs.register.service.MemberService;
+import app.labs.register.service.MyPageService;
+import jakarta.servlet.http.HttpSession;
+import lombok.extern.slf4j.Slf4j;
 
 @Controller
-@RequestMapping("/mypage")
+@Slf4j
 public class MyPageController {
 
     @Autowired
@@ -28,20 +30,30 @@ public class MyPageController {
     @Autowired
     private MemberService memberService;
 
-    @GetMapping
+    //게시글로 연결 
+    @GetMapping("/members/mypage")
     public String showMyPage(HttpSession session, Model model) {
         String userId = (String) session.getAttribute("userid");
+        if (userId == null) {
+            return "redirect:/members/login";
+        }
+
+        log.info("User ID from session: {}", userId);
+
         Member member = memberService.findByUserId(userId);
+        log.info("Retrieved member: {}", member);
+
+        List<MyContent> myPosts = myPageService.getPostsByUserId(userId);
+        List<PostComment> myComments = myPageService.getCommentsByUserId(userId);
+        log.info("Retrieved posts: {}", myPosts);
+
         model.addAttribute("member", member);
-
-        List<MyPageContent> contents = myPageService.getContentsByUserId(userId);
-        model.addAttribute("contents", contents);
-
-        List<PostComment> comments = myPageService.getCommentsByUserId(userId);
-        model.addAttribute("comments", comments);
-
-        return "thymeleaf/mypage";
+        model.addAttribute("myPosts", myPosts);
+        model.addAttribute("myComments", myComments);
+        return "thymeleaf/register/mypage";
     }
+
+
 
     @PostMapping("/update")
     public String updateMember(@ModelAttribute Member member, HttpSession session) {
