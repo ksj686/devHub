@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{/thymeleaf/main_content}">
+	layout:decorate="~{/thymeleaf/default_layout}">
 	
 <th:block layout:fragment="css">
     <link rel="stylesheet" th:href="@{/css/contents/contentsList.css}" />
@@ -10,17 +10,18 @@
 
 
 <div layout:fragment="content">
-    <h1 class="page-title">글 목록</h1>
+    <h1 class="page-title">게시판</h1>
   
     <div class="button-container">
     	<span id="createContent" class="create-btn" onclick="location.href='contents/new'">글 작성</span>
 	</div>
-	
+		
 	<table class = "contents-table">
 		<thead>
 			<tr>
 				<th class="table-header">제목</th>
 				<th class="table-header">작성자</th>
+				<th class="table-header">추천수</th>
 				<th class="table-header">작성일자</th>
 			</tr>
 		</thead>
@@ -29,6 +30,8 @@
 				<td class="table-cell"><a th:href="@{/contents/{contentId}(contentId=${content.contentId})}" 
 					th:utext="${content.title}" class="contents-link"></a></td>
 				<td th:text="${content.userId}" class="table-cell"></td>
+<!-- 				<td th:text="${member.userName}" class="table-cell"></td> -->
+				<td th:text="${content.recommendCnt}" class="table-cell"></td>
 				<td th:text="${content.dateCreated}" class="table-cell"></td>
 			</tr>
 		</tbody>
@@ -50,18 +53,18 @@
         </ul>
     </div>
     
-        <!-- 검색 기능 -->
-    <div class="search-bar">
-        <select id="searchFilter" class="search-select">
-            <option value="content">내용</option>
-            <option value="receiverId">받는 사람 ID</option>
-        </select>
-        <input name="searchText" type="text" id="searchText" class="search-input" placeholder="검색어를 입력하세요"/>
-        <div id="searchButton" class="search-button">검색</div>
-    </div>
-    
-    <th:block layout:fragment="script">
-		<script type="text/javascript" th:src="@{/js/message/sent.js}"></script>
-	</th:block>
+
+<!--     <div class="search-bar"> -->
+<!--         <select id="searchFilter" class="search-select"> -->
+<!--             <option value="search-title">제목</option> -->
+<!--             <option value="search-userId">작성자</option> -->
+<!--         </select> -->
+<!--         <input name="searchText" type="text" id="searchText" class="search-input" placeholder="검색어를 입력하세요"/> -->
+<!--         <div id="searchButton" class="search-button">검색</div> -->
+<!--     </div> -->
+
 </div>
+<th:block layout:fragment="script">
+	<script type="text/javascript" th:src="@{/js/contents/search.js}"></script>
+</th:block>
 </html>

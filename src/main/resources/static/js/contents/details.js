@@ -1,6 +1,6 @@
 /////////////////////// 글 삭제 스크립트///////////////////////
 document.addEventListener('DOMContentLoaded', function () {
-    document.querySelectorAll('.delete-button').forEach(button => {
+    document.querySelectorAll('.delete-content').forEach(button => {
         button.addEventListener('click', function () {
             const contentId = this.getAttribute('data-id'); // 글 ID
 			
@@ -115,32 +115,41 @@ function loadComments(contentId) {
         });
 }
 
-/////////////////추천수 증가 스크립트/////////////
 document.getElementById('recommend-button').addEventListener('click', function () {
     const contentId = this.getAttribute('data-id');
 
-    // 추천 수 증가 요청
     fetch(`/contents/${contentId}/recommend`, {
         method: 'POST'
-    }).then(response => {
+    })
+    .then(response => {
         if (response.ok) {
             updateRecommendCount(contentId); // 추천 수 업데이트
+        } else if (response.status === 403) {
+            alert('이미 추천한 글입니다.');
+        } else if (response.status === 401) {
+            alert('로그인이 필요합니다.');
         } else {
-            alert('Failed to recommend the content.');
+            alert('추천에 실패했습니다. 다시 시도해주세요.');
         }
+    })
+    .catch(error => {
+        console.error('Error occurred while recommending content:', error);
+        alert('오류가 발생했습니다. 다시 시도해주세요.');
     });
 });
 
 ////////////////추천수 조회 스크립트////////
 function updateRecommendCount(contentId) {
-    // 추천 수 조회 요청
-    fetch(`/contents/${contentId}/recommend`)
+    fetch(`/contents/${contentId}/recommend`) // 추천 수 조회 요청
         .then(response => response.json())
-        .then(data => {
-            document.getElementById('recommend-count').innerText = data; // 추천 수 업데이트
+        .then(recommendCount => {
+            // 추천 수를 업데이트
+            document.getElementById('recommend-count').innerText = recommendCount;
+        })
+        .catch(error => {
+            console.error('추천 수 업데이트 중 오류 발생:', error);
         });
 }
-
 
 
 //////////////textarea 자동 조정 스크립트///////
@@ -162,3 +171,5 @@ function adjustTextareaHeight(textarea) {
     textarea.style.height = 'auto'; // 높이를 초기화
     textarea.style.height = textarea.scrollHeight + 'px'; // 내용에 맞는 높이로 설정
 }
+
+

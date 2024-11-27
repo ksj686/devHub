@@ -23,4 +23,12 @@ public interface ContentRepository{
     // 전체 콘텐츠 개수 가져오기
     @Select("SELECT COUNT(*) FROM CONTENT")
     int getTotalContentCount();
+    
+    // 추천 이력 확인
+    int getRecommendCountByUserAndContent(@Param("contentId") int contentId, @Param("userId") String userId);
+    // 추천 기록 추가
+    void addRecommendHistory(@Param("contentId") int contentId, @Param("userId") String userId);
+    
+    List<Content> findByTitleContaining(@Param("title") String title);
+    List<Content> findByUserIdContaining(@Param("userId") String userId);
 }

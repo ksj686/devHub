@@ -71,5 +71,29 @@ public class BasicContentService implements ContentService {
     public int getTotalContentCount() {
         return contentRepository.getTotalContentCount();
     }
+    
+    public boolean recommendContent(@Param("contentId")int contentId, @Param("userId") String userId) {
+        // 추천 이력 확인
+        int recommendCount = contentRepository.getRecommendCountByUserAndContent(contentId, userId);
+
+        if (recommendCount > 0) {
+            // 이미 추천한 경우
+            return false;
+        }
+        // 추천 기록 추가
+       contentRepository.addRecommendHistory(contentId, userId);
+        // 콘텐츠 추천 수 증가
+        contentRepository.increaseRecommend(contentId);
+
+        return true;
+    }
+    
+    public List<Content> searchByTitle(String title) {
+        return contentRepository.findByTitleContaining(title);
+    }
+
+    public List<Content> searchByUserId(String userId) {
+        return contentRepository.findByUserIdContaining(userId);
+    }
 
 }

@@ -18,5 +18,7 @@ public interface ContentService {
     List<Content> getPagedContents(@Param("offset") int page, @Param("offset") int size);
     int getTotalContentCount();
     
-    
+    public boolean recommendContent(int contentId, String userId);
+    public List<Content> searchByTitle(String title);
+    public List<Content> searchByUserId(String userId);
 }	
