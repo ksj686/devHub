@@ -19,5 +19,5 @@ public interface MsgService {
     int deleteSent(List<String> messageIds);
     int deleteReceived(List<String> messageIds);
     //schedule
-    void updateExpiredMember();
+//    void updateExpiredMember();
 }

@@ -91,10 +91,10 @@ public class BasicMsgService implements MsgService {
 		return cnt[0];
 	}
 
-	@Override
-	public void updateExpiredMember() {
-		msgRepository.updateExpiredMember();
-	}
+//	@Override
+//	public void updateExpiredMember() {
+//		msgRepository.updateExpiredMember();
+//	}
     
 //    @Override
 //    public Msg getMsgDetail(int messageId, String viewerId) {

@@ -98,6 +98,7 @@
         /* 기본 섹션 표시 */
         .section.active {
             display: block;
+            padding-right: 150px;
         }
 
         /* 버튼 스타일 */
@@ -136,7 +137,7 @@
             max-width: 360px; /* 아이디 찾기 페이지의 최대 너비와 일치 */
             padding: 20px;
             
-            margin: 0 0 0 348px;
+            margin: auto;
             background-color: #ffffff;
             border: 1px solid #ddd;
             border-radius: 10px;
@@ -238,10 +239,13 @@
         <!-- 사이드바 -->
         <div class="sidebar">
             <nav>
-                <a href="http://localhost/profile/test">내 프로필</a>
+                <!-- <a th:href="@{/profile/{userId}(userId=${member.userId})}">내 프로필</a> -->
+                <a href="/profile/insert">내 프로필</a>
                 <a onclick="showSection('profile')">내 정보</a>
+                <a href="/journals" th:if="${session.userid != null}">수업일지</a>
                 <a onclick="showSection('posts')">내가 쓴 게시글</a>
                 <a onclick="showSection('comments')">내가 쓴 댓글</a>
+                <a href="/message/received" th:if="${session.userid != null}">내 쪽지함</a>
             </nav>
         </div>
 

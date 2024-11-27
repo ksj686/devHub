@@ -23,11 +23,11 @@
 		    </div>
 		    <div class="col-lg-5">
 		        <!-- <h1 class="font-weight-light">Business Name or Tagline</h1> -->
-		        <h1 class="font-weight-light" th:text="${notice.title}"></h1>
+		        <h1 class="font-weight-light" th:text="${notice.title}?: '공지사항이 없습니다'"></h1>
 		        <!-- <p>This is a template that is great for small businesses. It doesn't have too much fancy flare to it, but it makes a great use of the standard Bootstrap core components. Feel free to use this template for any project you want!</p> -->
-		        <p th:utext="${notice.text}"></p>
+		        <p th:utext="${notice.text} ?: '공지사항이 없습니다'"></p>
 		        <!-- <a class="btn btn-primary" href="#!">Call to Action!</a> -->
-		        <div class="card-footer"><a class="btn btn-primary btn-sm" th:href="@{/notice/{noticeId}(noticeId=${notice.noticeId})}">More Info</a></div>
+		        <div class="card-footer"><a class="btn btn-primary btn-sm" th:href="${notice.noticeId} != null ? @{/notice/{noticeId}(noticeId=${notice.noticeId})} : @{'http://localhost'}" onerror="this.onerror=null; ">More Info</a></div>
 		        <!-- <a th:href="@{/notice/{noticeId}(noticeId=${notice.noticeId})}">바로가기</a> -->
 		    </div>
 		</div>
