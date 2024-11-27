@@ -35,7 +35,7 @@
         	TITLE = #{title},
             TEXT = #{text, jdbcType=CLOB}, 
             LAST_UPDATED = #{lastUpdated}
-        WHERE CONTENT_ID = #{contentId}
+        WHERE CONTENT_ID = #{contentId} AND USER_ID = #{userId}
     </update>
 
     <delete id="deleteContent" parameterType="map">
@@ -82,6 +82,29 @@
   		SELECT RECOMMEND
   		FROM CONTENT
 	    WHERE CONTENT_ID = #{contentId}
+	</select>
+	
+	    <!-- 추천 이력 확인 -->
+    <select id="getRecommendCountByUserAndContent" resultType="int">
+        SELECT COUNT(*) 
+        FROM RECOMMEND_HISTORY
+        WHERE content_id = #{contentId} AND user_id = #{userId}
+    </select>
+
+    <!-- 추천 기록 추가 -->
+    <insert id="addRecommendHistory">
+        INSERT INTO RECOMMEND_HISTORY (content_id, user_id)
+        VALUES (#{contentId}, #{userId})
+    </insert>
+	
+	<select id="findByTitleContaining" resultType="app.labs.content.model.Content">
+	    SELECT * FROM CONTENT
+	    WHERE TITLE LIKE CONCAT('%', #{title}, '%')
+	</select>
+	
+	<select id="findByUserIdContaining" resultType="app.labs.content.model.Content">
+	    SELECT * FROM CONTENT
+	    WHERE USER_ID LIKE CONCAT('%', #{userId}, '%')
 	</select>
 
 </mapper>
