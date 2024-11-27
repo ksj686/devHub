@@ -7,6 +7,23 @@
 	<!-- <link rel="stylesheet" th:href="@{/css/message/sent.css}" /> -->
 
     <style>
+    	#title {
+            /* border: 1px solid #ccc; */
+            padding: 10px;
+            min-height: 50px; /* 높이 증가 */
+            font-size: 24px;  /* 글꼴 크기 증가 */
+            width: 100%;
+            white-space: pre-wrap;
+            overflow-y: auto;
+            margin-bottom: 10px;
+            margin-top: 10px;
+        }
+        
+        #title:focus { 
+	        outline: none; 
+	        border: none;
+        }
+    
         #editor {
             border: 1px solid #ccc;
             padding: 10px;
@@ -24,6 +41,27 @@
         #uploadBtn {
             margin-top: 10px;
         }
+        
+        .btn {
+			margin-top: 10px;
+			position: relative;
+			width: 160px;
+			height: 50px;
+		    padding: 10px 20px;
+		    border-radius: 15px;
+		    border-color: #d4dfe6;
+		    text-decoration: none;
+		    font-weight: 600;
+		    transition: 0.25s;
+		    background-color: #3AA0E4;
+		    color: #fff;
+		}
+		
+		.btn:hover {
+			font-weight: bold;
+			transform: scale(1.1);
+		}
+        
     </style>
 </th:block>
     <!-- jQuery -->
@@ -34,7 +72,7 @@
 <form id="noticeForm" action="/submit_notice" method="POST" enctype="multipart/form-data">
 
     <!-- 제목 필드 (서버로 전송될 필드) -->
-    <input type="text" name="title" placeholder="제목을 입력하세요" required />
+    <input type="text" id="title" name="title" placeholder="제목을 입력하세요" required />
     
     <!-- 글과 이미지를 입력할 공간 -->
     <div contenteditable="true" id="editor" name="content"></div>
@@ -44,10 +82,12 @@
 
     <!-- 파일 업로드 버튼 -->
     <input type="file" id="imageInput" name="image" accept="image/*" style="display: none;" />
-    <button type="button" id="uploadBtn">이미지 업로드</button>
+    <button type="button" class="btn" id="uploadBtn">
+    	<i class="bi bi-file-image"></i>이미지 업로드
+    </button>
 
     <!-- 제출 버튼 -->
-    <button type="submit" id="submitBtn">제출</button>
+    <button type="submit" class="btn" id="submitBtn">제출</button>
 </form>
 </div>
 <th:block layout:fragment="script">

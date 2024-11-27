@@ -12,6 +12,9 @@ public class WebConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new LoginCheckInterceptor())
                 .addPathPatterns("/members/**")
+                .addPathPatterns("/journals")
+                .addPathPatterns("/contents/new")
+                .addPathPatterns("/message/**")
                 .excludePathPatterns("/members/login", "/members/logout", "/members/insert", "/members/find-username", "/members/find-password"); // 인증 예외 경로 추가
     }
 }

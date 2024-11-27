@@ -1,17 +1,137 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" 
-		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
-		layout:decorate="~{/thymeleaf/default_layout}">
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+    layout:decorate="~{/thymeleaf/default_layout}">
+
+<th:block layout:fragment="css">
+    <style>
+        @charset "UTF-8";
+
+        /* 페이지 전체 스타일 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .content {
+            padding-top: 20px;
+        }
+
+        .form-0 {
+            position: relative;
+        }
+
+        .form {
+            display: flex;
+            flex-direction: column;
+            width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* 페이지 제목 */
+        .page-title {
+            font-size: 24px;
+            margin: 20px 0 10px;
+            padding: 0 20px;
+            color: #333;
+        }
+
+        .create-info {
+            margin-top: 40px;
+            padding: 10px;
+            background-color: #f5f6f7;
+            display: flex;
+            flex-direction: row; /* 가로로 정렬 */
+            align-items: center; /* 세로 정렬 */
+        }
+
+        .create-info > strong,
+        .create-info > span {
+            display: inline-block;
+            margin-right: 10px; /* 각 요소 간의 간격 */
+        }
+
+        .main-area {
+            margin-top: 30px;
+            font-size: 15px;
+            border: none;
+            background-color: #f5f6f7;
+            padding: 10px;
+            outline: none;
+        }
+
+        /*버튼*/
+        .btn {
+            margin-top: 10px;
+            position: relative;
+            width: 150px;
+            padding: 10px 20px;
+            border-radius: 15px;
+            border: none;
+            text-decoration: none;
+            font-weight: 600;
+            transition: 0.25s;
+            background-color: #3AA0E4;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            font-weight: bold;
+            transform: scale(1.1);
+        }
+
+        /* 메시지 링크 */
+        .message-links {
+            padding: 10px;
+            font-size: 14px;
+            text-align: left;
+            background-color: #f1f1f1;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .message-link {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .message-link:hover {
+            text-decoration: underline;
+        }
+
+    </style>
+</th:block>
 
 <div layout:fragment="content">
-    <h1>메시지 상세</h1>
-    <a th:href="@{/message/received}" class="btn btn-primary">목록으로 돌아가기</a>
-    <p><strong>보낸 사람:</strong> <span th:text="${msg.senderId}"></span></p>
-    <p><strong>받은 사람:</strong> <span th:text="${msg.receiverId}"></span></p>
-    <p><strong>작성일:</strong> <span th:text="${msg.dateCreated}"></span></p>
-    <p><strong>수신확인:</strong> <span th:text="${msg.dateRead}"></span></p>
-    <p><strong>내용:</strong></p>
-    <pre th:text="${msg.text}"></pre> <!-- 전체 메시지 내용 표시 -->
+    <!-- 받은 메시지와 보낸 메시지 링크 -->
+    <div class="message-links">
+        <a href="/message/received" class="message-link">받은 메시지</a> |
+        <a href="/message/sent" class="message-link">보낸 메시지</a>
+    </div>
+
+    <h1 class="page-title">받은 메시지</h1>
+
+    <div class='form-0'>
+        <div class='form'>
+
+            <div class="create-info">
+                <strong>보낸 사람:</strong> <span class="author" th:text="${msg.senderId}"></span>
+                &nbsp;&nbsp;&nbsp;
+                <strong>받은 사람:</strong> <span class="date-created" th:text="${msg.receiverId}"></span>
+                &nbsp;&nbsp;&nbsp;
+                <strong>작성일:</strong> <span class="date-created" th:text="${msg.dateCreated}"></span>
+                &nbsp;&nbsp;&nbsp;
+                <strong>수신확인:</strong> <span class="date-created" th:text="${msg.dateRead}"></span>
+            </div>
+            <div class="main-area">
+                <pre th:text="${msg.text}"></pre> <!-- 전체 메시지 내용 표시 -->
+            </div>
+            <a th:href="@{/message/received}" class="btn">목록</a>
+        </div>
+    </div>
 </div>
 
+<th:block layout:fragment="script">
+</th:block>
 </html>
