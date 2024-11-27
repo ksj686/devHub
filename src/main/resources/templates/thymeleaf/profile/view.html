@@ -8,10 +8,22 @@
 </th:block>
 <div layout:fragment="content">
 	
-   	<form action="/profile/insert" method="post">
    	<div class="profile-container">
    	<h1 th:each="user:${userInfo}" th:text="${user.userId}+ '\'s Profile'"></h1>
-   	<!-- 프로필 상세 정보 -->
+   		<!-- 프로필 상세 정보 -->
+   			
+    	<div class="profile-image">
+        <!-- 기본 이미지 표시 -->
+        	<div th:if="${profile.imageId == null or profile.imageData == null or profile.imageName == null or profile.imageContentType == null}" 
+     			class="default-image">
+    			No Image
+			</div>
+
+		<img th:if="${profile != null and profile.imageId != null and profile.imageData != null}"
+     		th:src="@{/profile/image/{imageId}(imageId=${profile.imageId})}" 
+    		alt="Profile Image">
+    	</div>
+			
     	<div class="rofile-row">
         	<div class="profile-label">아이디</div>
 			<div class="profile-value"><a th:utext="${userInfo.userId}"></a></div>        
@@ -38,9 +50,6 @@
 				class="btn btn-primary">수정하기</a>
 		</div>
     </div>
-	</form>
-   
-   
 </div>
 
 </html>
