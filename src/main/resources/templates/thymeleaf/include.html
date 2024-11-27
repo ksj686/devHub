@@ -28,7 +28,9 @@
 				<i class="envelop bi bi-envelope-arrow-up"></i>
 			</a>
 			<a href="/members/logout" th:if="${session.userid != null}">로그아웃</a>
+			<a href="/members/mypage" th:if="${session.userid != null}">마이페이지</a>	
 			<a href="/members/insert"  th:if="${session.userid == null}">회원가입</a>
+			
 		    </div>
 		</header>
 		  

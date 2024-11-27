@@ -1,5 +1,6 @@
 package app.labs.register.model;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 import lombok.Getter;
@@ -13,4 +14,6 @@ public class PostComment {
     private int contentId;
     private String text;
     private LocalDateTime dateCreated;
+    private Timestamp lastUpdated;
+
 }
