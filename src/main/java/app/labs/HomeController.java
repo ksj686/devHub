@@ -59,15 +59,23 @@ public class HomeController {
 		Notice notice = noticeService.getOneNotice();
 //		게시판 추천순으로 3개 게시글 가져오기
 		List<Content> contents = noticeService.getContents();
-		String plainText = stripHtmlTags(notice.getText());
-		String imgUrl = getFirstImageUrl(notice.getText());
-		if(plainText.length()>=200)
-			notice.setText(plainText.substring(0, 200) + "...");
-		else
-			notice.setText(plainText);
+		if(notice != null && notice.getNoticeId() != null) {
+			String plainText = stripHtmlTags(notice.getText());
+			String imgUrl = getFirstImageUrl(notice.getText());
+			if(plainText.length()>=200)
+				notice.setText(plainText.substring(0, 200) + "...");
+			else
+				notice.setText(plainText);
+			model.addAttribute("notice", notice);
+			model.addAttribute("imgUrl", imgUrl);
+		} else {
+			Notice emptyNotice = new Notice(); 
+			emptyNotice.setTitle("Code Connect"); 
+			emptyNotice.setText("Represent a platform where developers collaborate and communicate through AI technology"); 
+			model.addAttribute("notice", emptyNotice);
+		}
 //		String imgUrl = getFirstImageUrl(notice.getText());
-		model.addAttribute("imgUrl", imgUrl);
-		model.addAttribute("notice", notice);
+		
 		model.addAttribute("contents", contents);
 		return "thymeleaf/main_content";
 	}

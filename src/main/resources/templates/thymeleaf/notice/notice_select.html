@@ -1,33 +1,113 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{/thymeleaf/default_layout}">
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{/thymeleaf/default_layout}">
 
 <th:block layout:fragment="css">
+    <!-- <link rel="stylesheet" th:href="@{/css/notices/noticeView.css}" /> -->
+    <style>
+    	@charset "UTF-8";
+
+		/* 페이지 전체 스타일 */
+		body {
+		    font-family: Arial, sans-serif;
+		    margin: 0;
+		    padding: 0;
+		    /* background-color: #f9f9f9; */
+		}
+		
+		.content{
+		    padding-top: 20px;
+		}
+		
+		.form-0{
+		    position: relative;
+		}
+		
+		.form {
+		    display: flex;
+		    flex-direction: column;
+		    width: 1200px;
+		    margin: 0 auto;
+		}
+		
+		.page-title {
+		    margin-top: 20px;
+		    height: 50px;
+		    border : none;
+		    font-size: 40px;
+		    background-color: #f5f6f7;
+		    outline: none;
+		}
+		
+		.create-info {
+		    margin-top: 10px;
+		    padding: 10px;
+		    background-color: #f5f6f7;
+		    display: flex;
+		    flex-direction: row; /* 가로로 정렬 */
+		    align-items: center; /* 세로 정렬 */
+		}
+		
+		.create-info > strong,
+		.create-info > span {
+		    display: inline-block;
+		    margin-right: 10px; /* 각 요소 간의 간격 */
+		}
+		
+		.author, .date-created, .last-updated {
+		    display: block;
+		    margin-top: 5px;
+		}
+		
+		.main-area {
+		    margin-top: 30px;
+		    font-size: 15px;
+		    border: none;
+		    background-color: #f5f6f7;
+		    padding: 10px;
+		    outline: none;
+		}
+		
+		/*버튼*/
+		.btn {
+		    margin-top: 10px;
+		    position: relative;
+		    width: 150px;
+		    padding: 10px 20px;
+		    border-radius: 15px;
+		    border: none;
+		    text-decoration: none;
+		    font-weight: 600;
+		    transition: 0.25s;
+		    background-color: #3AA0E4;
+		    color: #fff;
+		    cursor: pointer;
+		}
+		
+		.btn:hover {
+		    font-weight: bold;
+		    transform: scale(1.1);
+		}
+    </style>
 </th:block>
-<!-- jQuery -->
-<!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
 
 <div layout:fragment="content">
-    <div>
-        <!-- 게시글 제목 -->
-        <!-- <h2 th:text="'제목 &nbsp;&nbsp;&nbsp;: ' + ${boardNotice.title}"></h2> -->
-        <h2><span class="tab">&nbsp;&nbsp;&nbsp;제목 </span> <span th:text="${boardNotice.title}"></span></h2>
-        <h2><span class="tab">작성자 </span> <span th:text="${boardNotice.userId}"></span></h2>
-        <!-- <h2 th:text="'작성자 : ' + ${boardNotice.userId}"></h2> -->
-        
-        
-        <!-- 게시글 내용 (텍스트) -->
-        <div th:utext="${boardNotice.text}"></div>
-		<h2 th:text="'작성일자 : ' + ${boardNotice.dateCreated}"></h2>
-        <!-- 저장된 이미지 파일들을 base64로 표시 -->
-        <!-- <div th:each="file : ${boardNotice.files}">
-            <h3>Attached Image: <span th:text="${file.fileName}"></span></h3>
-            <img th:src="'data:image/jpeg;base64,' + ${#strings.encodeBase64(file.fileData)}" alt="File image"/>
-        </div> -->
+    <div class='form-0'>
+        <div class='form'>
+            <h1 class="page-title"><span th:text="${boardNotice.title}">제목</span></h1>
+            <div class="create-info">
+                <strong>작성자:</strong> <span class="author" th:text="${boardNotice.userId}">작성자</span>
+                &nbsp;&nbsp;&nbsp;
+                <strong>작성일자:</strong> <span class="date-created" th:text="${boardNotice.dateCreated}">작성일자</span>
+            </div>
+            <div class="main-area" th:utext="${boardNotice.text}">게시글 내용</div>
+            <button onclick="location.href='/notices'" class="btn">목록</button>
+        </div>
     </div>
+    
 </div>
-    <!-- <a href="/board-notices">Back to Board Notices</a> -->
-	<!-- <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script> -->    
-    <th:block layout:fragment="script"></th:block>
+
+<th:block layout:fragment="script">
+</th:block>
 </html>

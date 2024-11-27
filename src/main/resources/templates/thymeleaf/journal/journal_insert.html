@@ -14,6 +14,7 @@
             white-space: pre-wrap;
             overflow-y: auto;
             margin-bottom: 10px;
+            margin-top: 10px;
         }
         #titleEditor:focus { 
 	        outline: none; 
@@ -71,6 +72,26 @@
 		    font-size: 20px;
 		    cursor: pointer;
 		}
+		
+		.btn {
+			margin-top: 10px;
+			position: relative;
+			width: 160px;
+			height: 50px;
+		    padding: 10px 20px;
+		    border-radius: 15px;
+		    border-color: #d4dfe6;
+		    text-decoration: none;
+		    font-weight: 600;
+		    transition: 0.25s;
+		    background-color: #3AA0E4;
+		    color: #fff;
+		}
+		
+		.btn:hover {
+			font-weight: bold;
+			transform: scale(1.1);
+		}
     </style>
 </th:block>
 <!-- jQuery -->
@@ -99,10 +120,12 @@
 
     <!-- 파일 업로드 버튼 -->
     <input type="file" id="imageInput" name="image" accept="image/*" style="display: none;" />
-    <button type="button" id="uploadBtn">이미지 업로드</button>
+    <button type="button" class="btn" id="uploadBtn">
+    	<i class="bi bi-file-image"></i>이미지 업로드
+    </button>
 
     <!-- 제출 버튼 -->
-    <button type="submit" id="submitBtn">제출</button>
+    <button type="submit" class="btn" id="submitBtn">제출</button>
     
     <div id="warningDialog" class="dialog" style="display:none;">
 		<div class="dialog-content">

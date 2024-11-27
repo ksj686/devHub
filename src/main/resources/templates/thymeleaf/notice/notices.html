@@ -1,51 +1,233 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{/thymeleaf/default_layout}">
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{/thymeleaf/default_layout}">
 
+<th:block layout:fragment="css">
+    <!-- <link rel="stylesheet" th:href="@{/css/notices/noticesList.css}" /> -->
+    <style>
+    	@charset "UTF-8";
+
+		/* 페이지 전체 스타일 */
+		body {
+		    font-family: Arial, sans-serif;
+		    margin: 0;
+		    padding: 0;
+		    /* background-color: #f9f9f9; */
+		}
+		
+		.content {
+		    padding-top: 20px;
+		}
+		
+		/* 글 링크 */
+		.notices-links {
+		    padding: 10px;
+		    font-size: 14px;
+		    text-align: left;
+		    background-color: #f1f1f1;
+		    border-bottom: 1px solid #ddd;
+		}
+		
+		.notices-link {
+		    color: #007bff;
+		    text-decoration: none;
+		}
+		
+		.notices-link:hover {
+		    text-decoration: underline;
+		}
+		
+		/* 페이지 제목 */
+		.page-title {
+		    font-size: 24px;
+		    margin: 20px 0 10px;
+		    padding: 0 20px;
+		    color: #333;
+		}
+		
+		/* 버튼 컨테이너 */
+		.button-container {
+		    padding: 10px 5px;
+		    display: flex;
+		    gap: 10px;
+		    margin: 20px;
+		}
+		
+		.create-btn {
+		    position: relative;
+		    padding: 10px 20px;
+		    border-radius: 15px;
+		    text-decoration: none;
+		    font-weight: 600;
+		    transition: 0.25s;
+		    background-color: #3AA0E4;
+		    color: #fff;
+		    cursor: pointer;
+		}
+		
+		.create-btn:hover {
+		    font-weight: bold;
+		    transform: scale(1.1);
+		}
+		
+		/* 글 테이블 */
+		.notices-table {
+		    width: 96%;
+		    border-collapse: collapse;
+		    margin: 0 20px 20px;
+		    background-color: #fff;
+		    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+		}
+		
+		.notices-table thead {
+		    background-color: #f1f1f1;
+		}
+		
+		.table-header {
+		    font-size: 14px;
+		    font-weight: bold;
+		    text-align: left;
+		    padding: 10px;
+		    border-bottom: 1px solid #ddd;
+		}
+		
+		.table-cell {
+		    font-size: 14px;
+		    text-align: left;
+		    padding: 10px;
+		    border-bottom: 1px solid #eee;
+		}
+		
+		.notices-row:hover {
+		    background-color: #f9f9f9;
+		}
+		
+		/* 검색 바 */
+		.search-bar {
+		    display: flex;
+		    align-items: center;
+		    justify-content: center; /* 내부 요소 가운데 정렬 */
+		    width: 300px; /* 좌우 크기 300px */
+		    height: 30px; /* 높이 30px */
+		    margin: 10px auto; /* 상하 여백 10px, 좌우 자동 정렬 */
+		    padding: 0 10px; /* 양옆 패딩 */
+		    gap: 10px; /* 내부 요소 간 간격 */
+		    border-radius: 5px; /* 모서리 둥글게 */
+		}
+		
+		.search-select {
+		    padding: 5px 10px;
+		    font-size: 14px;
+		    border: 1px solid #ccc;
+		    border-radius: 5px;
+		}
+		
+		.search-input {
+		    flex: 1;
+		    padding: 5px 10px;
+		    font-size: 14px;
+		    border: 1px solid #ccc;
+		    border-radius: 5px;
+		}
+		
+		.search-button {
+		    padding: 7px 15px;
+		    font-size: 14px;
+		    color: blue;
+		    border: 1px solid blue;
+		    border-radius: 5px;
+		    cursor: pointer;
+		    white-space: nowrap;
+		    background-color: white;
+		}
+		
+		.search-button:hover {
+		    background-color: #e4ecf3;
+		    text-decoration: underline;
+		    font-weight: bold;
+		    transform: scale(1.1);
+		}
+		
+		/*페이지*/
+		.pagination {
+		    padding: 10px 20px;
+		    margin-right: 40px;
+		    margin-left: 20px;
+		    display: flex;
+		    gap: 10px;
+		    font-size: 14px;
+		    background-color: #e4ecf3;
+		    text-decoration: none;
+		    color: #007bff;
+		}
+		
+		.pagination:hover {
+		    font-weight: bold;
+		}
+		
+		th {
+		    cursor: pointer;
+		}
+    
+    </style>
+</th:block>
 
 <div layout:fragment="content">
-    <h1 class="page-title">기록 목록</h1>
+    <h1 class="page-title">공지사항</h1>
   
-    <div class="notice-links">
-    	<a href="/notice_insert" class = "contents-link">새로운 글 작성</a> 
-	</div>
-	
-	<table class = "notices-table">
-		<thead>
-			<tr>
-				<th class="table-header">제목</th>
-				<th class="table-header">작성자</th>
-				<th class="table-header">작성일자</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr th:each="notice : ${notices}" class="notices-row">
-				<td class="table-cell">
-					<a th:href="@{/notice/{noticeId}(noticeId=${notice.noticeId})}" 
-					th:utext="${notice.title}"></a>
-				</td>
-				<td th:text="${notice.userId}" class="table-cell"></td>
-				<td th:text="${notice.dateCreated}" class="table-cell"></td>
-			</tr>
-		</tbody>
-	</table>
-	
-   <!--  <div>
+    <div class="button-container">
+        <span id="createNotice" th:if="${session.userid != null}" class="create-btn" onclick="location.href='/notice_insert'">새로운 글 작성</span>
+    </div>
+    
+    <table class="notices-table">
+        <thead>
+            <tr>
+                <th class="table-header">제목</th>
+                <th class="table-header">작성자</th>
+                <th class="table-header">작성일자</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="notice : ${notices}" class="notices-row">
+                <td class="table-cell">
+                    <a th:href="@{/notice/{noticeId}(noticeId=${notice.noticeId})}" 
+                       th:utext="${notice.title}" class="notices-link"></a>
+                </td>
+                <td th:text="${notice.userId}" class="table-cell"></td>
+                <td th:text="${notice.dateCreated}" class="table-cell"></td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <!-- <div>
         <ul class="pagination">
             <li th:if="${currentPage > 1}">
-                <a th:href="@{/contents(page=${currentPage - 1})}">&laquo; Previous &nbsp&nbsp</a>
+                <a th:href="@{/notices(page=${currentPage - 1})}">&laquo; Previous</a>
             </li>
             <li th:each="pageNum : ${#numbers.sequence(1, totalPages)}">
-                <a th:href="@{/contents(page=${pageNum})}" 
+                <a th:href="@{/notices(page=${pageNum})}" 
                    th:classappend="${pageNum == currentPage} ? 'active' : ''"
                    th:text="${pageNum}"></a>
             </li>
             <li th:if="${currentPage < totalPages}">
-                <a th:href="@{/contents(page=${currentPage + 1})}">&nbsp&nbsp Next &raquo;</a>
+                <a th:href="@{/notices(page=${currentPage + 1})}">Next &raquo;</a>
             </li>
         </ul>
     </div> -->
-	
+    
+    <!-- 검색 기능 -->
+    <!-- <div class="search-bar">
+        <select id="searchFilter" class="search-select">
+            <option value="title">제목</option>
+            <option value="userId">작성자</option>
+        </select>
+        <input name="searchText" type="text" id="searchText" class="search-input" placeholder="검색어를 입력하세요"/>
+        <div id="searchButton" class="search-button">검색</div>
+    </div>
+    
+    <th:block layout:fragment="script">
+        <script type="text/javascript" th:src="@{/js/notices/notices.js}"></script>
+    </th:block> -->
 </div>
 </html>
