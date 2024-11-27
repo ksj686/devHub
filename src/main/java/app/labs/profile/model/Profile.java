@@ -15,6 +15,11 @@ public class Profile {
     private String courseId;
     private String biography;
     
+    private byte[] imageData;
+    private int imageId;
+    private String imageName;
+    private String imageContentType;
+    
 //    private String courseName;
 //    private byte[] profileImageData;
 //    private String profileImageName;

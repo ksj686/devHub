@@ -3,19 +3,41 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="app.labs.profile.dao.ProfileRepository">
 
-	<select id="getProfileList" resultType="app.labs.profile.model.Profile">
+<resultMap id="ProfileResultMap" type="app.labs.profile.model.Profile">
+	<result column="PROFILE_ID" property="profileId" />
+    <result column="USER_ID" property="userId"/>
+    <result column="USER_NAME" property="userName"/>
+    <result column="EMAIL" property="email"/>
+    <result column="COURSE_ID" property="courseId" />
+    <result column="BIOGRAPHY" property="biography" jdbcType="CLOB"/>
+    <result column="IMAGE_ID" property="imageId" />
+    <result column="IMAGE_DATA" property="imageData" jdbcType="BLOB" javaType="[B"/>
+    <result column="IMAGE_NAME" property="imageName" />
+    <result column="IMAGE_CONTENT_TYPE" property="imageContentType" />
+</resultMap>
+
+	<select id="getProfileList" resultMap="ProfileResultMap">
 		SELECT * FROM USER_PROFILE
 	</select>
 
-    <!-- 프로필 정보를 가져오는 SELECT 문 -->
-    <select id="getProfileInfo" parameterType="string" resultType="app.labs.profile.model.Profile">
+	<select id="getProfileInfo" parameterType="string" resultMap="ProfileResultMap">
         SELECT PROFILE_ID,
         	   USER_ID,
         	   USER_NAME,
         	   EMAIL,
         	   COURSE_ID,        	   
-        	   BIOGRAPHY
+        	   BIOGRAPHY, 
+        	   IMAGE_ID, 
+        	   IMAGE_DATA, 
+        	   IMAGE_NAME, 
+        	   IMAGE_CONTENT_TYPE
+        	   
         FROM USER_PROFILE WHERE USER_ID = #{userId}
+	</select>
+	
+	<select id="getProfileImage" parameterType="int" resultMap="ProfileResultMap">
+		SELECT IMAGE_ID, IMAGE_DATA, IMAGE_NAME, IMAGE_CONTENT_TYPE
+		FROM USER_PROFILE WHERE IMAGE_ID = #{imageId}
 	</select>
 	
 	<!-- 특정 회원 정보 조회 -->
@@ -33,26 +55,36 @@
     <!-- update profile -->
     <update id="updateProfile" parameterType="app.labs.profile.model.Profile">
     	UPDATE USER_PROFILE
-    	SET USER_ID = #{userId}, USER_NAME = #{userName}, EMAIL = #{email}, COURSE_ID = #{courseId}, BIOGRAPHY = #{biography, jdbcType=CLOB}       	
+    	SET USER_ID = #{userId}, USER_NAME = #{userName}, EMAIL = #{email}, COURSE_ID = #{courseId}, BIOGRAPHY = #{biography, jdbcType=CLOB}
     	WHERE USER_ID = #{userId}
-    	<!-- LAST_UPDATED = CASE WHEN #{lastUpdated} IS NOT NULL THEN TO_TIMESTAMP(#{lastUpdated}, 'YYYY-MM-DD HH24:MI:SS') ELSE NULL END -->
 	</update>
 	
-	<!-- 코스 아이디, 네임 가져오기 -->
-	<!-- <select id="getCourseName" parameterType="string" resultType="app.labs.profile.model.Profile">
-		SELECT COURSE_ID, COURSE_NAME
-		FROM COURSE
-		WHERE COURSE_ID = #{courseId}	
-	</select> -->
+	<!-- PROFILE IMG 업데이트 -->
+	<!-- <update id="updateProfileImage" parameterType="map"> -->
+	<update id="updateProfileImage" parameterType="app.labs.profile.model.Profile">
+    	UPDATE USER_PROFILE
+    	SET 
+    		IMAGE_DATA = #{imageData, jdbcType=BLOB},
+        	IMAGE_NAME = #{imageName} ,
+        	IMAGE_CONTENT_TYPE = #{imageContentType}
+        	   
+    	WHERE IMAGE_ID = #{imageId}
+	</update>
 	
     <!-- 새로운 프로필 생성 -->
     <insert id="insertProfile" parameterType="app.labs.profile.model.Profile">
    		INSERT INTO USER_PROFILE (
-        	USER_ID, USER_NAME, EMAIL, COURSE_ID, BIOGRAPHY
+        	USER_ID, USER_NAME, EMAIL, COURSE_ID, BIOGRAPHY,
+        	IMAGE_ID, IMAGE_DATA, IMAGE_NAME, IMAGE_CONTENT_TYPE
     	) VALUES (
-        	#{userId}, #{userName}, #{email}, #{courseId}, #{biography, jdbcType=CLOB}
+        	#{userId}, #{userName}, #{email}, #{courseId}, #{biography, jdbcType=CLOB}, #{imageId} ,
+    		 #{imageData, jdbcType=BLOB},
+        	 #{imageName} ,
+        	 #{imageContentType}
            	)
 	</insert>
 	
-	
+	<select id="getMaxImageId" resultType="int">
+	 	SELECT NVL(MAX(IMAGE_ID),0) AS IMAGE_ID FROM USER_PROFILE
+	</select>	
 </mapper>

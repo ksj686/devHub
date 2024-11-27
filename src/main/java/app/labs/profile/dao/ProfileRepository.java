@@ -14,16 +14,19 @@ public interface ProfileRepository {
 	
 	// 특정 유저의 프로필 불러오기
 	Profile getProfileInfo(String userId);
+	
+	Profile getProfileImage(int imageId);
 		
 	// 프로필 업데이트 메소드
 	void updateProfile(Profile profile);
-	
-	// 코스
-//	Profile getCourseName(String courseId);
 				
 	// 프로필 insert
 	void insertProfile(Profile profile);
 	
 	Member getMemberInfo(String userId);
+	
+	void updateProfileImage(Profile profile);
+	
+	int getMaxImageId();
 }
 
