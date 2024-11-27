@@ -8,11 +8,32 @@
 </th:block>
 <div layout:fragment="content">
 	
-   	<form action="/profile/insert" method="post">
+   	<form action="/profile/insert" method="post" enctype="multipart/form-data">
    	<div class="profile-container">
    	<h1 th:each="user:${userInfo}" th:text="${user.userId}+ '\'s Profile'"></h1>
-  
+  		
     	<!-- 프로필 상세 정보 -->
+   			<div class="profile-image-container">
+    			<div class="profile-image">
+        			<!-- 기본 이미지 표시 -->
+                	<!-- <div th:if="${(profile == null) or (profile.imageId == null) or (profile.imageData == null) or (profile.imageName == null) or (profile.imageContentType == null)}" 
+     						class="default-image">
+    						No Image
+						</div> -->
+                	<!-- 프로필 이미지 표시 -->
+                	<!-- <img th:if="${profile != null and profile.imageId != null}"
+                    		 th:src="@{/profile/image/{imageId}(imageId=${profile.imageId})}" 
+                     		 alt="Profile Image"> -->
+               			
+                		
+            	</div>
+            	<!-- 파일 업로드 -->
+                <div class="file-upload">
+        			<label for="image" class="btn btn-secondary">이미지 선택</label>
+        			<input type="file" name="image" id="image" accept="image/*" style="display: none;">
+    			</div>
+			</div>
+    	
     	<div class="rofile-row">
         	<div class="profile-label">아이디</div>
 			<div class="profile-value"><input name="userId" th:each="user:${userInfo}" th:value="${user.userId}" readonly></div>        
