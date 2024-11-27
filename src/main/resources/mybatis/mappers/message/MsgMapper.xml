@@ -159,11 +159,11 @@
 		WHERE MESSAGE_ID = #{messageId}
 	</delete>
 	
-	<update id="updateExpiredMember">
+	<!-- <update id="updateExpiredMember">
 		UPDATE MEMBER
 			SET USER_STATUS = 'inactive'
 		WHERE LAST_LOGIN &lt; ADD_MONTHS(SYSDATE, -12)
 				AND 
 			USER_STATUS != 'inactive'
-	</update>
+	</update> -->
 </mapper>

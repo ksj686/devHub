@@ -29,5 +29,5 @@ public interface MsgRepository {
     int deleteSent(String messageId);
     int deleteReceived(String messageId);
     //schedule
-    void updateExpiredMember();
+//    void updateExpiredMember();
 }
