@@ -50,6 +50,26 @@ body {
 	transform: scale(1.1);
 }
 
+.img-btn {
+	margin-top: 10px;
+	position: relative;
+	width: 150px;
+	height: 50px;
+    padding: 10px 20px;
+    border-radius: 15px;
+    border-color: #d4dfe6;
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.25s;
+    background-color: #c0c0c0;
+    color: #fff;
+}
+
+.img-btn:hover {
+	font-weight: bold;
+	transform: scale(1.1);
+}
+
 .form-0{
 	position: relative;
 }
@@ -69,6 +89,21 @@ body {
     background-color: #f5f6f7;
     outline: none;
 }
+
+
+#editor {
+    width: 100%; /* 작성란 너비 */
+    margin-top: 30px;
+    min-height: 300px; /* 작성란 최소 높이 */
+    padding: 10px; /* 내부 여백 */
+    font-size: 16px; /* 글자 크기 */
+    font-family: Arial, sans-serif; /* 글꼴 */
+    line-height: 1.6; /* 줄 간격 */
+    background-color: #f5f6f7; /* 배경색 */
+    outline: none; /* 포커스 시 기본 외곽선 제거 */
+    overflow-y: auto; /* 내용이 넘칠 경우 스크롤 */
+}
+
 
 .write-content {
 	margin-top: 30px;

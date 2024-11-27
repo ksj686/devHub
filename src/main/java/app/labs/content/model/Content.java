@@ -16,7 +16,7 @@ public class Content {
 	private Timestamp lastUpdated;
 	private int fileId;
 	private int recommendCnt;
-	private String text;
+	private String text; // Base64 이미지 포함된 HTML
 	
     public void setDateCreated(Timestamp dateCreated) {
         this.dateCreated = new Timestamp(dateCreated.getTime() / 1000 * 1000); // 밀리초 제거

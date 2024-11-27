@@ -8,52 +8,65 @@
     <link rel="stylesheet" th:href="@{/css/contents/contentView.css}" />
 </th:block>
 
+<head><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"></head>
 
 <div layout:fragment="content">
 
 	<div class='form-0'>
 		<div class='form'>
 		    <h1 class="page-title" th:text="${content.title}">Title</h1>
-		    	<div clas="create-info">
-				    <strong>Author:</strong> <span class="author" th:text="${content.userId}">User ID</span>
-				    <strong>Date Created:</strong> <span class="date-created" th:text="${content.dateCreated}">Date Created</span>
-				    <strong>Last Updated:</strong> <span class="last-updated" th:text="${content.lastUpdated}">Last Updated</span>
-		    	</div>
-		    <textarea class="main-area" th:text="${content.text}">Content Text</textarea>
+		    	<div class="create-info">
+				    Author:<strong><span class="author" th:text="${content.userId}">User ID</span></strong>
+				    Date Created:<strong><span class="date-created" th:text="${content.dateCreated}">Date Created</span></strong>
+				    Last Updated:<strong><span class="last-updated" th:text="${content.lastUpdated}">Last Updated</span></strong>
+			    </div>   
+			    <div class="edit-buttons">
+				    <button class="return-list" onclick="location.href='/contents'">목록</button>
+					<button class="edit" th:onclick="'location.href=\'/contents/edit/' + ${content.contentId} + '\''">수정</button>
+					<button class="delete-content" th:data-id="${content.contentId}" th:data-user-id="${content.userId}">삭제</button>
+				</div>
+
+				<!-- <textarea class="main-area" th:text="${content.text}">Content Text</textarea> -->
+		        <div class="main-area" th:utext="${content.text}"></div> <!--  HTML 내용 렌더링-->
 		    
-		    <button class="recommend-btn" id="recommend-button" th:attr="data-id=${content.contentId}">추천!</button>
-		    <span class="recommend-cnt" id="recommend-count" th:text="${content.recommendCnt}">0</span>
+			<button class="recommend-btn" id="recommend-button" th:attr="data-id=${content.contentId}">
+			    <!-- 추천 수 표시 -->
+			    <span class="recommend-count" id="recommend-count" th:text="${content.recommendCnt}">0</span>
+			    <!-- 아이콘 (Font Awesome 사용) -->
+			    <i class="fa fa-thumbs-up" aria-hidden="true"></i>
+			</button>
 		    
-		    <h2>Comments</h2>
-			<div class = "comment-section" id="comments-section">
+		    
+			<div class="comment-section" id="comments-section">
 			    <ul>
 			        <li th:each="comment : ${comments}">
-			            <strong class="comment-uid" th:text="${comment.userId}">User ID</strong>:
-			            <span class="comment-text" th:text="${comment.text}">Comment Text</span>
-			            <small class="comment-date" th:text="${comment.dateCreated}">Date Created</small>
-			                    <!--삭제 버튼 표시 -->
-				        <button type="button" class="delete-comment-button"
-				                th:attr="data-comment-id=${comment.commentId}"
-				                th:attrappend=" data-content-id=${content.contentId}">
-				                삭제
-				        </button>
+			            <div class="comment-body">
+			                <strong class="comment-uid" th:text="${comment.userId}">User ID</strong>:
+			                <span class="comment-text" th:text="${comment.text}">Comment Text</span>
+			            </div>
+			            <div class="comment-meta">
+			                <small class="comment-date" th:text="${comment.dateCreated}">Date Created</small>
+			                <button type="button" class="delete-comment-button"
+			                        th:attr="data-comment-id=${comment.commentId}"
+			                        th:attrappend=" data-content-id=${content.contentId}">
+			                    삭제
+			                </button>
+			            </div>
 			        </li>
 			    </ul>
 			</div>
 		</div>
 			
 			    
-	    <h3>Add a Comment</h3>
-		<form id="comment-form" th:attr="data-id=${content.contentId}">
-	    	<textarea name="text" rows="5" cols="50" required></textarea>
-	    	<button type="submit">Add Comment</button>
+		<form class="comment-form" id="comment-form" th:attr="data-id=${content.contentId}">
+		    <div class="comment-input-group">
+		        <!-- 댓글 작성란 -->
+		        <textarea class="comment-textarea" name="text" rows="3" cols="50" required></textarea>
+		        <!-- Submit 버튼 -->
+		        <button type="submit" class="submit-btn">등록</button>
+		    </div>
 		</form>
-	    
-	    <button onclick="location.href='/contents'">목록</button>
-	
-		<button th:onclick="'location.href=\'/contents/edit/' + ${content.contentId} + '\''">수정</button>
-		<button class="delete-button" th:data-id="${content.contentId}" th:data-user-id="${content.userId}">삭제</button>
-		
+	  
 	</div>
 </div>
 <th:block layout:fragment="script">
