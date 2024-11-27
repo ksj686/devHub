@@ -77,18 +77,7 @@ public class MemberController {
         }
     }
 
-    // 마이페이지 (회원 정보 확인) 메서드
-    @GetMapping("/members/mypage")
-    public String showMemberProfile(HttpSession session, Model model) {
-        String userId = (String) session.getAttribute("userid");
-        if (userId != null) {
-            Member member = memberService.findByUserId(userId);
-            model.addAttribute("member", member);
-            return "thymeleaf/register/mypage";
-        } else {
-            return "redirect:/members/login";
-        }
-    }
+  
 
     // 회원 정보 수정 폼을 반환하는 메서드
     @GetMapping("/members/edit")
