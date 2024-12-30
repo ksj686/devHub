@@ -9,7 +9,7 @@
 				//"WHERE LAST_LOGIN < ADD_MONTHS(SYSDATE, -12)" +
 				//"AND USER_STATUS != 'inactive'"; // 쿼리
 	String sql = (String) request.getAttribute("fileContent");
-	//System.out.println("sql문 : "+sql);
+	System.out.println("memberupdate 실행 : \n"+sql);
 %>
 
 <%
@@ -19,7 +19,7 @@
         PreparedStatement pstmt = conn.prepareStatement(sql)
     ) {
     	int rowsAffected = pstmt.executeUpdate();
-    	//System.out.println("업데이트된 행의 수: " + rowsAffected);
+    	System.out.println("inactive 회원수: " + rowsAffected);
     } catch (SQLException e) {
         e.printStackTrace(); // 예외 발생 시 출력
     }

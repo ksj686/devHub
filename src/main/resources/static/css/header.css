@@ -28,7 +28,7 @@ body, html {
 }
 
 .header .logo img {
-	width: 100%;
+	width: 200%;
 	height: 100%;
 	object-fit: cover;
 }
@@ -242,4 +242,8 @@ header.dark-mode {
 .envelop{
 	font-size: 30px;
 	color: #2e3a77;
+}
+
+.head-notice{
+	padding-left: 50px;
 }

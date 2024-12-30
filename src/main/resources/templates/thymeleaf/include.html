@@ -9,13 +9,14 @@
 		    <div class="logo">
 		      <a href="/"><img src="/assets/logo.png" alt="로고"></a>
 		    </div>
-		    <nav class="nav">
+		    <nav class="nav head-notice">
 		      <a href="/notices">공지사항</a>
 		      <a href="/contents">게시판</a>
+		      <a href="#">Q&A</a>
 		      <a href="#">About Code Connect</a>
-		      <a href="/journals" th:if="${session.userid != null}">
+		      <!-- <a href="/journals" th:if="${session.userid != null}">
 		      	수업일지
-		      </a>
+		      </a> -->
 		    </nav>
 		    <div class="right-section">
 		    	<button id="mode-toggle" class="mode-toggle-btn">🌙</button>

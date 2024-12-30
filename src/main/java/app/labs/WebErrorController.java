@@ -12,7 +12,7 @@ import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 
-//@Controller
+@Controller
 @Slf4j
 public class WebErrorController implements ErrorController {
 //	private final Logger logger = LoggerFactory.getLogger(this.getClass());

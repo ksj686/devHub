@@ -184,18 +184,4 @@ public class MsgController {
     	log.info(cnt+"건의 받은 메시지 삭제");
     	return "redirect:/message/received";
 	}
-    
-    
-    // 추후 삭제예정
-//    @GetMapping("/message/{userId}")
-//	public String loginEmp(@PathVariable("userId") String userId, 
-//			               HttpSession session, RedirectAttributes redirectAttrs) {	
-//		
-//				
-//		session.setMaxInactiveInterval(600); //10분
-//		session.setAttribute("userid", userId);
-//		
-//		return "redirect:/message/sent";
-//		
-//	}
 }

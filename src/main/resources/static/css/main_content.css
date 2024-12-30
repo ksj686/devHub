@@ -12,6 +12,10 @@
 	}
 }
 
+.color-blue-im {
+	background-color: #166AA2 !important;
+}
+
 .card {
   --bs-card-spacer-y: 1rem;
   --bs-card-spacer-x: 1rem;

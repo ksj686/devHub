@@ -260,3 +260,7 @@ body {
 th {
 	cursor: pointer;
 }
+
+.comment-margin-setting{
+	margin-left: 13rem;
+}
